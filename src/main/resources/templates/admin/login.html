@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Tech G Admin Login</title>
+    <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;600;700&family=Poppins:wght@500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" th:href="@{/css/admin.css}">
+</head>
+<body class="login-body">
+<form class="login-card" th:action="@{/admin/login}" method="post">
+    <div class="brand">Tech <span>G</span> Admin</div>
+    <p class="hint">Please log in to manage your website.</p>
+    <div class="login-err" th:if="${error}" th:text="${error}"></div>
+    <div class="login-info" th:if="${info}" th:text="${info}"></div>
+    <label>Username<input type="text" name="username" required autofocus autocomplete="username"></label>
+    <label>Password<input type="password" name="password" required autocomplete="current-password"></label>
+    <button class="btn o login-btn" type="submit">Log in</button>
+</form>
+</body>
+</html>

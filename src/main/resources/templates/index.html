@@ -1,0 +1,311 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Tech G | Computer Sales &amp; Service</title>
+    <meta name="description" content="Tech G - one supplier for laptops, desktops, accessories, networking and computer repair.">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&family=Poppins:ital,wght@0,500;0,600;0,700;1,500;1,600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+<body>
+
+<!-- Toast message after a form is submitted -->
+<div th:if="${toast}" th:text="${toast}" th:class="'toast ' + ${toastType}" id="toast"></div>
+
+<!-- ============ HEADER ============ -->
+<header class="header">
+    <div class="container nav">
+        <a href="#home" class="logo"><span class="logo-icon"><i class="fa-solid fa-desktop"></i></span>Tech <span>G</span></a>
+        <nav class="nav-links" id="navLinks">
+            <a href="#home">Home</a>
+            <a href="#products">Products</a>
+            <a href="#services">Services</a>
+            <a href="#about">About</a>
+            <a href="#contact" class="btn btn-purple nav-cta-mobile">Contact Us</a>
+        </nav>
+        <a href="#contact" class="btn btn-purple nav-cta">Contact Us</a>
+        <button class="menu-btn" id="menuBtn" aria-label="Open menu"><i class="fa-solid fa-bars"></i></button>
+    </div>
+</header>
+
+<main>
+<!-- ============ HERO ============ -->
+<section class="hero" id="home" th:style="'--hero-img:url(' + ${img['hero_image']} + ')'">
+    <div class="container hero-inner">
+        <div class="hero-text">
+            <span class="eyebrow" th:if="${s['hero_eyebrow'] != ''}" th:text="${s['hero_eyebrow']}">COMPUTER SALES &amp; SERVICE</span>
+            <h1><span th:text="${s['hero_title']}">One supplier for</span><br><em th:text="${s['hero_accent']}">every piece</em></h1>
+            <div class="rule"></div>
+            <p th:text="${s['hero_subtitle']}">Description</p>
+            <div class="hero-btns">
+                <a href="#products" class="btn btn-orange"><span th:text="${s['hero_btn1']}">Explore Products</span> <i class="fa-solid fa-arrow-right"></i></a>
+                <a href="#contact" class="btn btn-outline"><span th:text="${s['hero_btn2']}">Request a Quote</span> <i class="fa-solid fa-arrow-right"></i></a>
+            </div>
+            <div class="warranty">
+                <span class="warranty-icon"><i class="fa-solid fa-shield-halved"></i></span>
+                <div><strong th:text="${s['warranty_title']}">1-Year Service Warranty</strong><small th:text="${s['warranty_note']}">(Warranty Protection Included)</small></div>
+            </div>
+        </div>
+    </div>
+    <div class="container">
+        <div class="highlights">
+            <div class="hl"><span class="hl-icon purple"><i class="fa-solid fa-laptop"></i></span><div><h4 th:text="${s['hl1_title']}">Laptop Services</h4><p th:text="${s['hl1_desc']}">Text</p></div></div>
+            <div class="hl"><span class="hl-icon purple"><i class="fa-solid fa-wifi"></i></span><div><h4 th:text="${s['hl2_title']}">Network Solutions</h4><p th:text="${s['hl2_desc']}">Text</p></div></div>
+            <div class="hl"><span class="hl-icon orange"><i class="fa-solid fa-screwdriver-wrench"></i></span><div><h4 th:text="${s['hl3_title']}">Maintenance Plans</h4><p th:text="${s['hl3_desc']}">Text</p></div></div>
+        </div>
+    </div>
+</section>
+
+<!-- ============ REPAIR & SERVICES ============ -->
+<section class="section services-section" id="services">
+    <div class="container">
+        <div class="services-banner">
+            <img th:src="${img['services_image']}" alt="Technician repairing a computer" loading="lazy" onerror="this.onerror=null;this.src='/images/placeholder.svg'">
+            <span class="pill orange services-banner-label" th:if="${s['services_eyebrow'] != ''}" th:text="${s['services_eyebrow']}">LAPTOP &amp; COMPUTER SERVICE</span>
+        </div>
+        <div class="services-layout services-content">
+            <div class="services-promo">
+                <h2><span th:text="${s['services_title']}">When something isn't right,</span> <em th:text="${s['services_accent']}">bring it in.</em></h2>
+                <p th:if="${s['services_subtitle'] != ''}" th:text="${s['services_subtitle']}">Describe the problem you're facing and we'll get back to you about service for your laptop or desktop.</p>
+                <a href="#contact" class="btn btn-purple">Request a Quote <i class="fa-solid fa-arrow-right"></i></a>
+            </div>
+            <div class="services-grid">
+                <article class="service-card" th:each="sv : ${services}">
+                    <span class="service-icon"><i th:class="${sv.iconClass}"></i></span>
+                    <div class="service-card-content">
+                        <h3 th:text="${sv.title}">Laptop Service</h3>
+                        <p th:text="${sv.description}">Description</p>
+                        <button type="button" class="link-btn enquire-service" th:data-name="${sv.title}">Book a service <i class="fa-solid fa-arrow-right"></i></button>
+                    </div>
+                </article>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ============ PRODUCTS ============ -->
+<section class="section alt" id="products">
+    <div class="container">
+        <div class="section-head">
+            <span class="pill orange" th:if="${s['products_eyebrow'] != ''}" th:text="${s['products_eyebrow']}">PRODUCTS &amp; ACCESSORIES</span>
+            <h2><span th:text="${s['products_title']}">Everything for the desk,</span> <em th:text="${s['products_accent']}">in one place.</em></h2>
+        </div>
+        <div class="grid products-grid">
+            <article class="product-card" th:each="p, st : ${products}">
+                <div class="product-img">
+                    <span class="tag" th:text="${#numbers.formatInteger(st.count, 2)} + ' · ' + ${p.category}">01 · Computers</span>
+                    <span class="tag stock" th:if="${p.stockStatus == false}">Out of stock</span>
+                    <img th:src="${p.imageUrl}" th:alt="${p.name}" loading="lazy" onerror="this.onerror=null;this.src='/images/placeholder.svg'">
+                </div>
+                <div class="product-body">
+                    <h3 th:text="${p.name}">Laptops</h3>
+                    <p th:text="${p.description}">Description</p>
+                    <button type="button" class="btn btn-orange btn-sm enquire-product" th:data-name="${p.name}">Enquire Now <i class="fa-solid fa-arrow-right"></i></button>
+                </div>
+            </article>
+        </div>
+        <p class="empty" th:if="${#lists.isEmpty(products)}">Products coming soon.</p>
+    </div>
+</section>
+
+<!-- ============ ABOUT ============ -->
+<section class="section alt" id="about">
+    <div class="container about">
+        <div class="about-text">
+            <span class="pill purple" th:if="${s['about_eyebrow'] != ''}" th:text="${s['about_eyebrow']}">ABOUT US</span>
+            <h2><span th:text="${s['about_title']}">Your Trusted Partner for</span> <em th:text="${s['about_accent']}">Computer Solutions</em></h2>
+            <p th:text="${s['about_text']}">About text</p>
+        </div>
+        <div class="pillars">
+            <div class="pillar"><i class="fa-solid fa-laptop"></i><h4 th:text="${s['pillar1_title']}">Computer Sales</h4><p th:text="${s['pillar1_desc']}">Text</p></div>
+            <div class="pillar"><i class="fa-solid fa-headset"></i><h4 th:text="${s['pillar2_title']}">Service Support</h4><p th:text="${s['pillar2_desc']}">Text</p></div>
+            <div class="pillar"><i class="fa-solid fa-keyboard"></i><h4 th:text="${s['pillar3_title']}">Accessories</h4><p th:text="${s['pillar3_desc']}">Text</p></div>
+            <div class="pillar"><i class="fa-solid fa-award"></i><h4 th:text="${s['pillar4_title']}">Quality Products</h4><p th:text="${s['pillar4_desc']}">Text</p></div>
+        </div>
+    </div>
+</section>
+
+<!-- ============ COMPLETE COMPUTER SETUP (dark banner) ============ -->
+<section class="showcase" id="setup">
+    <div class="container">
+        <span class="show-eyebrow" th:if="${s['showcase_eyebrow'] != ''}" th:text="${s['showcase_eyebrow']}">COMPLETE COMPUTER SETUP</span>
+        <h2 class="show-title" th:text="${s['showcase_title']}">“Technology, chosen well.”</h2>
+        <p class="show-sub" th:if="${s['showcase_subtitle'] != ''}" th:text="${s['showcase_subtitle']}">Description</p>
+        <div class="show-img"><img th:src="${img['showcase_image']}" alt="A complete computer setup" loading="lazy" onerror="this.onerror=null;this.src='/images/placeholder.svg'"></div>
+        <ul class="chips" th:if="${s['showcase_chips'] != ''}">
+            <li th:each="c : ${#strings.arraySplit(s['showcase_chips'], ',')}" th:if="${!#strings.isEmpty(#strings.trim(c))}" th:text="${#strings.trim(c)}">Monitor</li>
+        </ul>
+    </div>
+</section>
+
+<!-- ============ WHY CHOOSE US ============ -->
+<section class="section why" id="why">
+    <div class="container">
+        <span class="pill orange" th:if="${s['why_eyebrow'] != ''}" th:text="${s['why_eyebrow']}">WHY CHOOSE US</span>
+        <h2 class="why-title"><span th:text="${s['why_title_start']}">Built around</span> <em th:text="${s['why_accent']}">your</em> <span th:text="${s['why_title_end']}">whole setup</span><b class="dot">.</b></h2>
+        <div class="why-grid">
+            <div class="why-art"><img th:src="${img['why_image']}" alt="Complete computer setup" loading="lazy" onerror="this.onerror=null;this.src='/images/placeholder.svg'"></div>
+            <ol class="why-list">
+                <li class="why-card" th:each="f : ${features}">
+                    <span class="why-icon"><i th:class="${f.iconClass}"></i></span>
+                    <div><h3 th:text="${f.title}">Title</h3><p th:text="${f.description}">Description</p></div>
+                    <span class="why-arrow"><i class="fa-solid fa-arrow-right"></i></span>
+                </li>
+            </ol>
+        </div>
+    </div>
+</section>
+
+<!-- ============ REVIEWS ============ -->
+<section class="section reviews-section" id="reviews">
+    <div class="container">
+        <div class="section-head">
+            <span class="pill purple" th:if="${s['reviews_eyebrow'] != ''}" th:text="${s['reviews_eyebrow']}">TESTIMONIALS</span>
+            <h2><span th:text="${s['reviews_title']}">What our customers</span> <em th:text="${s['reviews_accent']}">say.</em></h2>
+            <p th:if="${!#lists.isEmpty(reviews)}"><span class="stars big"><i class="fa-solid fa-star"></i></span> <strong th:text="${avgRating}">5.0</strong> average from <span th:text="${#lists.size(reviews)}">1</span> review(s)</p>
+        </div>
+
+        <div class="carousel-wrap" th:if="${!#lists.isEmpty(reviews)}">
+            <button class="car-btn" id="revPrev" aria-label="Previous"><i class="fa-solid fa-chevron-left"></i></button>
+            <div class="carousel" id="revTrack">
+                <article class="review-card" th:each="r : ${reviews}">
+                    <div class="stars">
+                        <i th:each="i : ${#numbers.sequence(1,5)}" th:class="${i <= r.rating} ? 'fa-solid fa-star' : 'fa-regular fa-star'"></i>
+                    </div>
+                    <p class="quote" th:text="${r.reviewText}">Review</p>
+                    <div class="who">
+                        <span class="avatar" th:text="${#strings.toUpperCase(#strings.substring(r.customerName,0,1))}">A</span>
+                        <div><strong th:text="${r.customerName}">Name</strong><small th:if="${r.location != null and !#strings.isEmpty(r.location)}" th:text="${r.location}">City</small></div>
+                    </div>
+                </article>
+            </div>
+            <button class="car-btn" id="revNext" aria-label="Next"><i class="fa-solid fa-chevron-right"></i></button>
+        </div>
+        <p class="empty" th:if="${#lists.isEmpty(reviews)}">No reviews yet. Be the first to write one!</p>
+
+        <form class="card review-form" th:action="@{/submit-review}" method="post">
+            <h3>Write a review</h3>
+            <div class="row">
+                <label>Your name *<input type="text" name="customerName" required maxlength="80" placeholder="Enter your name"></label>
+                <label>Location (optional)<input type="text" name="location" maxlength="80" placeholder="City"></label>
+            </div>
+            <div class="rate-line">
+                <span>Your rating *</span>
+                <div class="star-input">
+                    <input type="radio" id="s5" name="rating" value="5" required><label for="s5" title="5 stars"><i class="fa-solid fa-star"></i></label>
+                    <input type="radio" id="s4" name="rating" value="4"><label for="s4" title="4 stars"><i class="fa-solid fa-star"></i></label>
+                    <input type="radio" id="s3" name="rating" value="3"><label for="s3" title="3 stars"><i class="fa-solid fa-star"></i></label>
+                    <input type="radio" id="s2" name="rating" value="2"><label for="s2" title="2 stars"><i class="fa-solid fa-star"></i></label>
+                    <input type="radio" id="s1" name="rating" value="1"><label for="s1" title="1 star"><i class="fa-solid fa-star"></i></label>
+                </div>
+            </div>
+            <label>Your review *<textarea name="reviewText" rows="4" required maxlength="1500" placeholder="Tell us about your experience..."></textarea></label>
+            <button class="btn btn-purple" type="submit">Submit Review</button>
+        </form>
+    </div>
+</section>
+
+<!-- ============ ENQUIRY ============ -->
+<section class="section contact" id="contact">
+    <div class="container contact-grid">
+        <div class="contact-info">
+            <span class="pill orange" th:if="${s['contact_eyebrow'] != ''}" th:text="${s['contact_eyebrow']}">CONTACT</span>
+            <h2><span th:text="${s['contact_title']}">Send us an</span> <em th:text="${s['contact_accent']}">enquiry.</em></h2>
+            <p class="lead" th:text="${s['contact_lead']}">Description</p>
+            <ul class="info-list">
+                <li><span class="ic"><i class="fa-solid fa-phone"></i></span><div><small>Phone</small><strong th:text="${s['phone']}">+00 00000 00000</strong></div></li>
+                <li><span class="ic purple"><i class="fa-regular fa-envelope"></i></span><div><small>Email</small><strong th:text="${s['email']}">hello@yourbusiness.com</strong></div></li>
+                <li><span class="ic"><i class="fa-solid fa-location-dot"></i></span><div><small>Address</small><strong th:text="${s['address']}">Your street address, City</strong></div></li>
+                <li th:if="${s['business_hours'] != ''}"><span class="ic purple"><i class="fa-regular fa-clock"></i></span><div><small>Business hours</small><strong th:text="${s['business_hours']}">Mon - Sat, 9am - 7pm</strong></div></li>
+            </ul>
+
+            <div class="socials" th:fragment="socials" th:if="${hasSocials}">
+                <a th:if="${s['social_facebook'] != ''}" th:href="${s['social_facebook']}" target="_blank" rel="noopener noreferrer" aria-label="Facebook"><i class="fa-brands fa-facebook-f"></i></a>
+                <a th:if="${s['social_instagram'] != ''}" th:href="${s['social_instagram']}" target="_blank" rel="noopener noreferrer" aria-label="Instagram"><i class="fa-brands fa-instagram"></i></a>
+                <a th:if="${s['social_x'] != ''}" th:href="${s['social_x']}" target="_blank" rel="noopener noreferrer" aria-label="X"><i class="fa-brands fa-x-twitter"></i></a>
+                <a th:if="${s['social_linkedin'] != ''}" th:href="${s['social_linkedin']}" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn"><i class="fa-brands fa-linkedin-in"></i></a>
+                <a th:if="${s['social_youtube'] != ''}" th:href="${s['social_youtube']}" target="_blank" rel="noopener noreferrer" aria-label="YouTube"><i class="fa-brands fa-youtube"></i></a>
+            </div>
+        </div>
+
+        <form class="card enquiry-form" th:action="@{/submit-enquiry}" method="post" id="enquiryForm">
+            <h3 class="label-title">Enquiry Type</h3>
+            <input type="hidden" name="enquiryType" id="enquiryType" value="IT Products">
+            <div class="tabs" id="enqTabs">
+                <button type="button" class="tab active" data-type="IT Products"><i class="fa-solid fa-cube"></i> IT Products</button>
+                <button type="button" class="tab" data-type="Whole Office Setup"><i class="fa-solid fa-desktop"></i> Whole Office Setup</button>
+                <button type="button" class="tab" data-type="Repair and Services"><i class="fa-solid fa-wrench"></i> Repair and Services</button>
+            </div>
+            <div class="tab-head">
+                <span class="ic purple" id="tabIcon"><i class="fa-solid fa-cube"></i></span>
+                <div><h4 id="tabTitle">IT Products Quotation</h4><p id="tabDesc">For laptops, desktops, accessories and other computer products.</p></div>
+            </div>
+            <div class="row">
+                <label>Name <b>*</b><input type="text" name="name" required maxlength="100" placeholder="Enter your name"></label>
+                <label>Phone Number <b>*</b><input type="tel" name="phone" required maxlength="20" pattern="[0-9+()\- ]{7,20}" title="Enter a valid phone number" placeholder="Enter your phone number"></label>
+            </div>
+            <label><span id="prodLabel">Select Product</span> <b>*</b>
+                <select name="productName" id="productSelect" required></select>
+            </label>
+            <div class="row">
+                <label>Quantity <b>*</b>
+                    <select name="quantity" required>
+                        <option value="" disabled selected>Select quantity</option>
+                        <option th:each="n : ${#numbers.sequence(1,10)}" th:value="${n}" th:text="${n}">1</option>
+                        <option value="11">10+</option>
+                    </select>
+                </label>
+                <label>Specifications / Requirements
+                    <textarea name="specifications" rows="3" maxlength="1500" placeholder="Tell us about the specifications or any special requirements..."></textarea>
+                </label>
+            </div>
+            <label>Message
+                <textarea name="message" rows="3" maxlength="1500" placeholder="Additional details (optional)..."></textarea>
+            </label>
+            <button class="btn btn-orange btn-block" type="submit"><i class="fa-solid fa-paper-plane"></i> Submit Enquiry</button>
+        </form>
+    </div>
+</section>
+</main>
+
+<footer class="footer">
+    <div class="container footer-main">
+        <div class="footer-brand">
+            <a href="#home" class="logo light"><span class="logo-icon"><i class="fa-solid fa-desktop"></i></span>Tech-G</a>
+            <p>Computer sales and service — laptops, desktops, peripherals and networking accessories.</p>
+            <div th:replace="~{index :: socials}"></div>
+        </div>
+        <nav class="footer-nav" aria-label="Footer navigation">
+            <a href="#home">Home</a>
+            <a href="#services">Services</a>
+            <a href="#contact">Contact</a>
+        </nav>
+        <nav class="footer-nav" aria-label="More footer navigation">
+            <a href="#products">Products</a>
+            <a href="#about">About</a>
+        </nav>
+        <address class="footer-contact">
+            <a th:if="${s['phone'] != ''}" th:text="${s['phone']}" th:href="'tel:' + ${s['phone']}">+00 00000 00000</a>
+            <a th:if="${s['email'] != ''}" th:text="${s['email']}" th:href="'mailto:' + ${s['email']}">hello@yourbusiness.com</a>
+            <span th:if="${s['address'] != ''}" th:text="${s['address']}">Your street address, City</span>
+        </address>
+    </div>
+    <div class="container footer-bottom">
+        <p>&copy; <span id="year">2026</span> Tech-G Computers</p>
+    </div>
+</footer>
+
+<a th:if="${s['whatsapp'] != ''}" class="wa-float" th:href="'https://wa.me/' + ${s['whatsapp']}" target="_blank" rel="noopener noreferrer" aria-label="Chat on WhatsApp"><i class="fa-brands fa-whatsapp"></i></a>
+
+<!-- Lists used by the enquiry drop-down -->
+<script th:inline="javascript">
+    const PRODUCT_NAMES = /*[[${productNames}]]*/ [];
+    const SERVICE_NAMES = /*[[${serviceNames}]]*/ [];
+</script>
+<script th:src="@{/js/main.js}"></script>
+</body>
+</html>

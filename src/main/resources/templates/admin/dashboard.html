@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Tech G Admin</title>
+    <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;600;700&family=Poppins:wght@500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link rel="stylesheet" th:href="@{/css/admin.css}">
+</head>
+<body>
+<aside class="side">
+    <div class="brand">Tech <span>G</span> Admin</div>
+    <a href="#overview"><i class="fa-solid fa-chart-simple"></i> Overview</a>
+
+    <div class="side-label">Website text</div>
+    <a th:each="g : ${groups}" th:href="'#' + ${g.id()}"><i class="fa-solid fa-pen"></i> <span th:text="${g.title()}">Group</span></a>
+
+    <div class="side-label">Pictures &amp; lists</div>
+    <a href="#images"><i class="fa-solid fa-image"></i> Pictures</a>
+    <a href="#services"><i class="fa-solid fa-screwdriver-wrench"></i> Services</a>
+    <a href="#products"><i class="fa-solid fa-box"></i> Products</a>
+    <a href="#features"><i class="fa-solid fa-star"></i> Why choose us cards</a>
+
+    <div class="side-label">Messages</div>
+    <a href="#enquiries"><i class="fa-solid fa-envelope"></i> Enquiries</a>
+    <a href="#reviews"><i class="fa-solid fa-comment"></i> Reviews</a>
+
+    <a href="/" class="view" target="_blank">View live site</a>
+    <form class="logout" th:action="@{/admin/logout}" method="post">
+        <button type="submit"><i class="fa-solid fa-right-from-bracket"></i> Log out</button>
+    </form>
+</aside>
+
+<div class="main">
+    <h1 id="overview">Dashboard</h1>
+    <div class="msg" th:if="${msg}" th:text="${msg}"></div>
+    <div class="msg err" th:if="${error}" th:text="${error}"></div>
+
+    <div class="stats">
+        <div class="stat"><b th:text="${productCount}">0</b><span>Total products</span></div>
+        <div class="stat"><b th:text="${serviceCount}">0</b><span>Services</span></div>
+        <div class="stat"><b th:text="${enquiryCount}">0</b><span>Incoming enquiries</span></div>
+        <div class="stat"><b th:text="${reviewCount}">0</b><span>Total reviews</span></div>
+    </div>
+
+    <!-- ========== EDITABLE TEXT: one panel per website section ========== -->
+    <section class="panel" th:each="g : ${groups}" th:id="${g.id()}">
+        <h2 th:text="${g.title()}">Section</h2>
+        <p class="hint" th:if="${g.hint() != ''}" th:text="${g.hint()}"></p>
+        <form th:action="@{/admin/settings/save}" method="post">
+            <input type="hidden" name="_group" th:value="${g.id()}">
+            <div class="form">
+                <label th:each="f : ${g.fields()}" th:classappend="${f.type() == 'textarea'} ? 'wide'">
+                    <span th:text="${f.label()}">Label</span>
+                    <textarea th:if="${f.type() == 'textarea'}" th:name="${f.key()}" rows="3" maxlength="1000" th:text="${s[f.key()]}"></textarea>
+                    <input th:unless="${f.type() == 'textarea'}" th:type="${f.type() == 'email'} ? 'email' : 'text'"
+                           th:name="${f.key()}" th:value="${s[f.key()]}" maxlength="1000" th:placeholder="${f.hint()}">
+                </label>
+            </div>
+            <button class="btn p" type="submit">Save</button>
+        </form>
+    </section>
+
+    <!-- ========== PICTURES ========== -->
+    <section class="panel" id="images">
+        <h2>Pictures</h2>
+        <p class="hint">Choose a new picture and press Upload. It is stored on Cloudinary and appears on the website straight away.</p>
+        <div class="imgs">
+            <div class="img-card" th:each="slot : ${imageSlots}">
+                <strong th:text="${slot.label()}">Picture</strong>
+                <img th:id="'imgprev-' + ${slot.key()}" th:src="${images[slot.key()]}" alt="Current picture">
+                <small class="hint" th:text="${slot.hint()}"></small>
+                <form th:action="@{/admin/image/{k}/save(k=${slot.key()})}" method="post" enctype="multipart/form-data">
+                    <input type="file" name="imageFile" accept="image/*" required
+                           th:data-prev="'imgprev-' + ${slot.key()}" onchange="previewImg(this)">
+                    <button class="btn p" type="submit">Upload</button>
+                </form>
+                <form th:action="@{/admin/image/{k}/reset(k=${slot.key()})}" method="post" onsubmit="return confirm('Go back to the default picture?')">
+                    <button class="btn g" type="submit">Reset to default</button>
+                </form>
+            </div>
+        </div>
+    </section>
+
+    <!-- ========== SERVICES ========== -->
+    <section class="panel" id="services">
+        <h2>Services (repair cards)</h2>
+        <p class="hint">Icon class uses Font Awesome, for example: <code>fa-solid fa-laptop</code></p>
+        <form class="form" id="serviceForm" th:action="@{/admin/services/save}" method="post">
+            <input type="hidden" name="id" id="sId">
+            <label>Title<input name="title" id="sTitle" required></label>
+            <label>Icon class<input name="iconClass" id="sIcon" value="fa-solid fa-wrench"></label>
+            <label>Description<textarea name="description" id="sDesc" rows="2"></textarea></label>
+            <div class="actions">
+                <button class="btn p" type="submit" id="sSubmit">Add service</button>
+                <button class="btn g" type="button" onclick="resetForm('serviceForm','sId','sSubmit','Add service')">Clear</button>
+            </div>
+        </form>
+        <div class="table-wrap"><table>
+            <thead><tr><th>Icon</th><th>Title</th><th>Description</th><th>Actions</th></tr></thead>
+            <tbody>
+            <tr th:each="sv : ${services}">
+                <td><i th:class="${sv.iconClass}"></i></td>
+                <td th:text="${sv.title}"></td>
+                <td th:text="${sv.description}"></td>
+                <td>
+                    <button class="btn o" type="button" th:data-id="${sv.id}" th:data-title="${sv.title}"
+                        th:data-icon="${sv.iconClass}" th:data-desc="${sv.description}" onclick="editService(this)">Edit</button>
+                    <form class="inline" th:action="@{/admin/services/{id}/delete(id=${sv.id})}" method="post" onsubmit="return confirm('Delete this service?')">
+                        <button class="btn d" type="submit">Delete</button>
+                    </form>
+                </td>
+            </tr>
+            </tbody>
+        </table></div>
+    </section>
+
+    <!-- ========== PRODUCTS ========== -->
+    <section class="panel" id="products">
+        <h2>Products</h2>
+        <form class="form" id="productForm" th:action="@{/admin/products/save}" method="post" enctype="multipart/form-data">
+            <input type="hidden" name="id" id="pId">
+            <label>Name<input name="name" id="pName" required></label>
+            <label>Category<input name="category" id="pCategory" placeholder="Computers / Peripherals / Networking" required></label>
+            <label>Price (optional)<input name="price" id="pPrice" type="number" step="0.01" min="0"></label>
+            <label>Product image (uploads to Cloudinary)
+                <input type="file" name="imageFile" id="pFile" accept="image/*" onchange="previewFile(this)">
+            </label>
+            <label>Image address (filled automatically after upload)
+                <input name="imageUrl" id="pImage" placeholder="https://res.cloudinary.com/...">
+            </label>
+            <img id="pPreview" class="preview" alt="Preview" style="display:none">
+            <label>Description<textarea name="description" id="pDesc" rows="2"></textarea></label>
+            <label class="chk"><input type="checkbox" name="stockStatus" id="pStock" value="true" checked> In stock</label>
+            <div class="actions">
+                <button class="btn p" type="submit" id="pSubmit">Add product</button>
+                <button class="btn g" type="button" onclick="resetForm('productForm','pId','pSubmit','Add product')">Clear</button>
+            </div>
+        </form>
+        <div class="table-wrap"><table>
+            <thead><tr><th>Image</th><th>Name</th><th>Category</th><th>Price</th><th>Stock</th><th>Actions</th></tr></thead>
+            <tbody>
+            <tr th:each="p : ${products}">
+                <td><img class="thumb" th:src="${p.imageUrl}" alt="" onerror="this.style.visibility='hidden'"></td>
+                <td th:text="${p.name}"></td>
+                <td th:text="${p.category}"></td>
+                <td th:text="${p.price}"></td>
+                <td th:text="${p.stockStatus} ? 'In stock' : 'Out'"></td>
+                <td>
+                    <button class="btn o" type="button"
+                        th:data-id="${p.id}" th:data-name="${p.name}" th:data-category="${p.category}"
+                        th:data-price="${p.price}" th:data-image="${p.imageUrl}" th:data-desc="${p.description}"
+                        th:data-stock="${p.stockStatus}" onclick="editProduct(this)">Edit</button>
+                    <form class="inline" th:action="@{/admin/products/{id}/delete(id=${p.id})}" method="post" onsubmit="return confirm('Delete this product?')">
+                        <button class="btn d" type="submit">Delete</button>
+                    </form>
+                </td>
+            </tr>
+            </tbody>
+        </table></div>
+    </section>
+
+    <!-- ========== WHY CHOOSE US CARDS ========== -->
+    <section class="panel" id="features">
+        <h2>Why choose us cards</h2>
+        <p class="hint">The cards shown next to the picture in the "Why choose us" section. Icon class uses Font Awesome, for example: <code>fa-solid fa-bolt</code></p>
+        <form class="form" id="featureForm" th:action="@{/admin/features/save}" method="post">
+            <input type="hidden" name="id" id="fId">
+            <label>Title<input name="title" id="fTitle" required></label>
+            <label>Icon class<input name="iconClass" id="fIcon" value="fa-solid fa-star"></label>
+            <label>Description<textarea name="description" id="fDesc" rows="2"></textarea></label>
+            <div class="actions">
+                <button class="btn p" type="submit" id="fSubmit">Add card</button>
+                <button class="btn g" type="button" onclick="resetForm('featureForm','fId','fSubmit','Add card')">Clear</button>
+            </div>
+        </form>
+        <div class="table-wrap"><table>
+            <thead><tr><th>Icon</th><th>Title</th><th>Description</th><th>Actions</th></tr></thead>
+            <tbody>
+            <tr th:each="f : ${features}">
+                <td><i th:class="${f.iconClass}"></i></td>
+                <td th:text="${f.title}"></td>
+                <td th:text="${f.description}"></td>
+                <td>
+                    <button class="btn o" type="button" th:data-id="${f.id}" th:data-title="${f.title}"
+                        th:data-icon="${f.iconClass}" th:data-desc="${f.description}" onclick="editFeature(this)">Edit</button>
+                    <form class="inline" th:action="@{/admin/features/{id}/delete(id=${f.id})}" method="post" onsubmit="return confirm('Delete this card?')">
+                        <button class="btn d" type="submit">Delete</button>
+                    </form>
+                </td>
+            </tr>
+            </tbody>
+        </table></div>
+    </section>
+
+    <!-- ========== ENQUIRIES ========== -->
+    <section class="panel" id="enquiries">
+        <h2>Customer enquiries</h2>
+        <div class="table-wrap"><table>
+            <thead><tr><th>Received</th><th>Type</th><th>Name</th><th>Phone</th><th>Item</th><th>Qty</th><th>Specifications</th><th>Message</th><th></th></tr></thead>
+            <tbody>
+            <tr th:each="e : ${enquiries}">
+                <td th:text="${#temporals.format(e.createdAt,'dd MMM yyyy HH:mm')}"></td>
+                <td th:text="${e.enquiryType}"></td>
+                <td th:text="${e.name}"></td>
+                <td th:text="${e.phone}"></td>
+                <td th:text="${e.productName}"></td>
+                <td th:text="${e.quantity}"></td>
+                <td th:text="${e.specifications}"></td>
+                <td th:text="${e.message}"></td>
+                <td><form class="inline" th:action="@{/admin/enquiries/{id}/delete(id=${e.id})}" method="post" onsubmit="return confirm('Delete this enquiry?')"><button class="btn d" type="submit">Delete</button></form></td>
+            </tr>
+            <tr th:if="${#lists.isEmpty(enquiries)}"><td colspan="9">No enquiries yet.</td></tr>
+            </tbody>
+        </table></div>
+    </section>
+
+    <!-- ========== REVIEWS ========== -->
+    <section class="panel" id="reviews">
+        <h2>Customer reviews</h2>
+        <div class="table-wrap"><table>
+            <thead><tr><th>Date</th><th>Name</th><th>Location</th><th>Rating</th><th>Review</th><th></th></tr></thead>
+            <tbody>
+            <tr th:each="r : ${reviews}">
+                <td th:text="${#temporals.format(r.createdAt,'dd MMM yyyy')}"></td>
+                <td th:text="${r.customerName}"></td>
+                <td th:text="${r.location}"></td>
+                <td th:text="${r.rating} + ' / 5'"></td>
+                <td th:text="${r.reviewText}"></td>
+                <td><form class="inline" th:action="@{/admin/reviews/{id}/delete(id=${r.id})}" method="post" onsubmit="return confirm('Delete this review?')"><button class="btn d" type="submit">Delete</button></form></td>
+            </tr>
+            <tr th:if="${#lists.isEmpty(reviews)}"><td colspan="6">No reviews yet.</td></tr>
+            </tbody>
+        </table></div>
+    </section>
+</div>
+
+<script>
+  function $(id){return document.getElementById(id);}
+  function editProduct(b){
+    const d=b.dataset;
+    $('pId').value=d.id; $('pName').value=d.name; $('pCategory').value=d.category;
+    $('pPrice').value=d.price||''; $('pImage').value=d.image||''; $('pDesc').value=d.desc||'';
+    $('pStock').checked=(d.stock==='true'); $('pSubmit').textContent='Save changes';
+    showPreview(d.image);
+    $('productForm').scrollIntoView({behavior:'smooth'});
+  }
+  function editService(b){
+    const d=b.dataset;
+    $('sId').value=d.id; $('sTitle').value=d.title; $('sIcon').value=d.icon||''; $('sDesc').value=d.desc||'';
+    $('sSubmit').textContent='Save changes';
+    $('serviceForm').scrollIntoView({behavior:'smooth'});
+  }
+  function editFeature(b){
+    const d=b.dataset;
+    $('fId').value=d.id; $('fTitle').value=d.title; $('fIcon').value=d.icon||''; $('fDesc').value=d.desc||'';
+    $('fSubmit').textContent='Save changes';
+    $('featureForm').scrollIntoView({behavior:'smooth'});
+  }
+  function resetForm(formId,idField,btnId,label){
+    $(formId).reset(); $(idField).value=''; $(btnId).textContent=label;
+    if(formId==='productForm') showPreview('');
+  }
+  function showPreview(src){
+    const img=$('pPreview');
+    if(src){ img.src=src; img.style.display='block'; } else { img.removeAttribute('src'); img.style.display='none'; }
+  }
+  function previewFile(input){
+    if(input.files && input.files[0]) showPreview(URL.createObjectURL(input.files[0]));
+  }
+  function previewImg(input){
+    if(input.files && input.files[0]) $(input.dataset.prev).src=URL.createObjectURL(input.files[0]);
+  }
+</script>
+</body>
+</html>

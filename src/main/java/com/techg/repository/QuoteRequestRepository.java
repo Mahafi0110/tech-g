@@ -1,0 +1,9 @@
+package com.techg.repository;
+
+import com.techg.entity.QuoteRequest;
+import org.springframework.data.jpa.repository.JpaRepository;
+import java.util.List;
+
+public interface QuoteRequestRepository extends JpaRepository<QuoteRequest, Long> {
+    List<QuoteRequest> findAllByOrderByCreatedAtDesc();
+}
