@@ -7,7 +7,7 @@
     <meta name="description" content="Tech G - one supplier for laptops, desktops, accessories, networking and computer repair.">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&family=Poppins:ital,wght@0,500;0,600;0,700;1,500;1,600&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&family=Playfair+Display:ital,wght@0,500;0,600;1,500;1,600&family=Poppins:ital,wght@0,500;0,600;0,700;1,500;1,600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <link rel="stylesheet" th:href="@{/css/style.css}">
 </head>
@@ -38,7 +38,8 @@
     <div class="container hero-inner">
         <div class="hero-text">
             <span class="eyebrow" th:if="${s['hero_eyebrow'] != ''}" th:text="${s['hero_eyebrow']}">COMPUTER SALES &amp; SERVICE</span>
-            <h1><span th:text="${s['hero_title']}">One supplier for</span><br><em th:text="${s['hero_accent']}">every piece</em></h1>
+            <!-- <h1><span th:text="${s['hero_title']}">One supplier for</span><br><em th:text="${s['hero_accent']}">every piece</em></h1> -->
+             <h1><span th:text="${s['hero_title']}">One supplier</span><br>for <em th:text="${s['hero_accent']}">every piece</em></h1>
             <div class="rule"></div>
             <p th:text="${s['hero_subtitle']}">Description</p>
             <div class="hero-btns">
@@ -61,7 +62,7 @@
 </section>
 
 <!-- ============ REPAIR & SERVICES ============ -->
-<section class="section services-section" id="services">
+<!-- <section class="section services-section" id="services">
     <div class="container">
         <div class="services-banner">
             <img th:src="${img['services_image']}" alt="Technician repairing a computer" loading="lazy" onerror="this.onerror=null;this.src='/images/placeholder.svg'">
@@ -80,6 +81,34 @@
                         <h3 th:text="${sv.title}">Laptop Service</h3>
                         <p th:text="${sv.description}">Description</p>
                         <button type="button" class="link-btn enquire-service" th:data-name="${sv.title}">Book a service <i class="fa-solid fa-arrow-right"></i></button>
+                    </div>
+                </article>
+            </div>
+        </div>
+    </div>
+</section> -->
+<!-- ============ REPAIR & SERVICES ============ -->
+<section class="section services-section" id="services">
+    <div class="container">
+        <div class="services-banner">
+            <img th:src="${img['services_image']}" alt="Technician repairing a computer" loading="lazy" onerror="this.onerror=null;this.src='/images/placeholder.svg'">
+            <span class="pill orange services-banner-label" th:if="${s['services_eyebrow'] != ''}" th:text="${s['services_eyebrow']}">LAPTOP &amp; COMPUTER SERVICE</span>
+        </div>
+
+        <div class="services-layout services-content">
+            <div class="services-promo">
+                <h2><span th:text="${s['services_title']}">When something isn't right,</span> <em th:text="${s['services_accent']}">bring it in.</em></h2>
+                <p th:if="${s['services_subtitle'] != ''}" th:text="${s['services_subtitle']}">Describe the problem you're facing and we'll get back to you about service for your laptop or desktop.</p>
+                <a href="#contact" class="btn btn-purple">Request a Quote <i class="fa-solid fa-arrow-right"></i></a>
+            </div>
+
+            <div class="services-grid">
+                <article class="service-card" th:each="sv : ${services}">
+                    <span class="service-icon"><i th:class="${sv.iconClass}"></i></span>
+                    <div class="service-card-content">
+                        <h3 th:text="${sv.title}">Laptop service</h3>
+                        <p th:text="${sv.description}">Description</p>
+                        <button type="button" class="link-btn enquire-service" th:data-name="${sv.title}"><span class="sr-only"></span></button>
                     </div>
                 </article>
             </div>
@@ -113,18 +142,97 @@
 </section>
 
 <!-- ============ ABOUT ============ -->
-<section class="section alt" id="about">
-    <div class="container about">
-        <div class="about-text">
-            <span class="pill purple" th:if="${s['about_eyebrow'] != ''}" th:text="${s['about_eyebrow']}">ABOUT US</span>
-            <h2><span th:text="${s['about_title']}">Your Trusted Partner for</span> <em th:text="${s['about_accent']}">Computer Solutions</em></h2>
-            <p th:text="${s['about_text']}">About text</p>
+<!-- ============ ABOUT ============ -->
+<section class="ab-section" id="about">
+    <div class="container ab-grid">
+
+        <!-- LEFT: text + cards -->
+        <div class="ab-content">
+            <span class="ab-pill" th:text="${s['about_eyebrow'] ?: 'ABOUT US'}">ABOUT US</span>
+
+            <h2 class="ab-title">
+                <span th:text="${s['about_line1'] ?: 'Your Trusted Partner'}">Your Trusted Partner</span><br>
+                <em class="ab-for">for</em> <em class="ab-accent" th:text="${s['about_accent'] ?: 'Computer Solutions'}">Computer Solutions</em>
+            </h2>
+
+            <p class="ab-text"
+               th:text="${s['about_text'] ?: 'We provide a complete range of computer solutions, including laptop and desktop sales, professional computer service, and a wide selection of accessories and peripherals — all designed to meet your personal and business needs.'}">About text</p>
+
+            <div class="ab-cards">
+                <article class="ab-card">
+                    <span class="ab-icon blue"><i class="fa-solid fa-desktop"></i></span>
+                    <h4 th:text="${s['pillar1_title'] ?: 'Computer Sales'}">Computer Sales</h4>
+                    <p th:text="${s['pillar1_desc'] ?: 'Get the right laptop or desktop for work, study or everyday use.'}">Description</p>
+                    <a href="#sales" class="ab-go orange" aria-label="Computer Sales"><i class="fa-solid fa-arrow-right"></i></a>
+                </article>
+
+                <article class="ab-card">
+                    <span class="ab-icon orange"><i class="fa-solid fa-gear"></i></span>
+                    <h4 th:text="${s['pillar2_title'] ?: 'Service Support'}">Service Support</h4>
+                    <p th:text="${s['pillar2_desc'] ?: 'Keep your devices running smoothly with reliable and professional service support.'}">Description</p>
+                    <a href="#services" class="ab-go purple" aria-label="Service Support"><i class="fa-solid fa-arrow-right"></i></a>
+                </article>
+
+                <article class="ab-card">
+                    <span class="ab-icon purple"><i class="fa-solid fa-microphone"></i></span>
+                    <h4 th:text="${s['pillar3_title'] ?: 'Accessories & Peripherals'}">Accessories &amp; Peripherals</h4>
+                    <p th:text="${s['pillar3_desc'] ?: 'Enhance your setup with quality accessories and performance peripherals.'}">Description</p>
+                    <a href="#products" class="ab-go orange" aria-label="Accessories and Peripherals"><i class="fa-solid fa-arrow-right"></i></a>
+                </article>
+            </div>
         </div>
-        <div class="pillars">
-            <div class="pillar"><i class="fa-solid fa-laptop"></i><h4 th:text="${s['pillar1_title']}">Computer Sales</h4><p th:text="${s['pillar1_desc']}">Text</p></div>
-            <div class="pillar"><i class="fa-solid fa-headset"></i><h4 th:text="${s['pillar2_title']}">Service Support</h4><p th:text="${s['pillar2_desc']}">Text</p></div>
-            <div class="pillar"><i class="fa-solid fa-keyboard"></i><h4 th:text="${s['pillar3_title']}">Accessories</h4><p th:text="${s['pillar3_desc']}">Text</p></div>
-            <div class="pillar"><i class="fa-solid fa-award"></i><h4 th:text="${s['pillar4_title']}">Quality Products</h4><p th:text="${s['pillar4_desc']}">Text</p></div>
+
+        <!-- RIGHT: finished artwork image -->
+        <div class="ab-visual">
+            <img th:src="${img['about_image'] ?: '/images/about-setup.png'}"
+                 alt="Computer setup with monitor, keyboard and plant" loading="lazy"
+                 onerror="this.onerror=null;this.src='/images/placeholder.svg'">
+        </div>
+    </div>
+</section>
+
+<!-- ============ COMPUTER SALES (Laptops & Desktops) ============ -->
+<section class="section sales-section" id="sales">
+    <div class="container sales-grid">
+
+        <!-- Left: finished artwork image -->
+        <div class="sales-art">
+            <img th:src="${img['sales_image'] ?: '/images/sales-laptop.png'}"
+                 alt="Laptop on a wooden desk" loading="lazy"
+                 onerror="this.onerror=null;this.src='/images/placeholder.svg'">
+        </div>
+
+        <!-- Right: text -->
+        <div class="sales-text">
+            <span class="pill orange" th:text="${s['sales_eyebrow'] ?: 'LAPTOP &amp; COMPUTER SALES'}">LAPTOP &amp; COMPUTER SALES</span>
+            <h2>
+                <span th:text="${s['sales_title'] ?: 'Find the computer that fits'}">Find the computer that fits</span>
+                <em th:text="${s['sales_accent'] ?: 'how you work.'}">how you work.</em>
+            </h2>
+            <p class="sales-lead"
+               th:text="${s['sales_text'] ?: 'Whether you need a laptop to carry or a desktop to settle into, tell us what you need it for and we will help you explore the options available.'}">Description</p>
+
+            <div class="sales-cards">
+                <div class="sales-card purple">
+                    <span class="sales-card-icon"><i class="fa-solid fa-laptop"></i></span>
+                    <div>
+                        <h4 th:text="${s['sales_card1_title'] ?: 'Laptops'}">Laptops</h4>
+                        <p th:text="${s['sales_card1_desc'] ?: 'For work, study and travel'}">For work, study and travel</p>
+                    </div>
+                </div>
+                <div class="sales-card orange">
+                    <span class="sales-card-icon"><i class="fa-solid fa-desktop"></i></span>
+                    <div>
+                        <h4 th:text="${s['sales_card2_title'] ?: 'Desktops'}">Desktops</h4>
+                        <p th:text="${s['sales_card2_desc'] ?: 'For home and office desks'}">For home and office desks</p>
+                    </div>
+                </div>
+            </div>
+
+            <a href="#contact" class="btn btn-purple">
+                <span th:text="${s['sales_btn'] ?: 'Request a Quote'}">Request a Quote</span>
+                <i class="fa-solid fa-arrow-right"></i>
+            </a>
         </div>
     </div>
 </section>
@@ -160,68 +268,132 @@
     </div>
 </section>
 
+<!-- ============ CTA BANNER SECTION ============ -->
+<section class="section cta-banner-section" id="cta-banner">
+    <div class="container">
+        <div class="cta-banner-card" th:style="'background-image: url(' + @{/images/cta-banner.png} + ');'">
+            <div class="cta-content">
+                <span class="cta-eyebrow">HAVE A QUESTION?</span>
+                <h2>Let's talk <em>computers.</em></h2>
+                <p>Looking for a product, an accessory, or service for your computer? Send us an enquiry.</p>
+                <div class="cta-action-row">
+                    <a href="#contact" class="btn btn-purple">
+                        Get in Touch <i class="fa-solid fa-arrow-right"></i>
+                    </a>
+                    <span class="cta-tags">Products &middot; Accessories &middot; Service</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
 <!-- ============ REVIEWS ============ -->
 <section class="section reviews-section" id="reviews">
     <div class="container">
-        <div class="section-head">
-            <span class="pill purple" th:if="${s['reviews_eyebrow'] != ''}" th:text="${s['reviews_eyebrow']}">TESTIMONIALS</span>
-            <h2><span th:text="${s['reviews_title']}">What our customers</span> <em th:text="${s['reviews_accent']}">say.</em></h2>
-            <p th:if="${!#lists.isEmpty(reviews)}"><span class="stars big"><i class="fa-solid fa-star"></i></span> <strong th:text="${avgRating}">5.0</strong> average from <span th:text="${#lists.size(reviews)}">1</span> review(s)</p>
+
+        <!-- Heading (top left, above both columns) -->
+        <div class="reviews-head">
+            <span class="pill orange" th:if="${s['reviews_eyebrow'] != ''}" th:text="${s['reviews_eyebrow']}">CUSTOMER REVIEWS</span>
+            <h2><span th:text="${s['reviews_title']}">What our</span> <em th:text="${s['reviews_accent']}">customers</em> say</h2>
+            <p>Real people. Real experiences. Trusted by many.</p>
         </div>
 
-        <div class="carousel-wrap" th:if="${!#lists.isEmpty(reviews)}">
-            <button class="car-btn" id="revPrev" aria-label="Previous"><i class="fa-solid fa-chevron-left"></i></button>
-            <div class="carousel" id="revTrack">
-                <article class="review-card" th:each="r : ${reviews}">
-                    <div class="stars">
-                        <i th:each="i : ${#numbers.sequence(1,5)}" th:class="${i <= r.rating} ? 'fa-solid fa-star' : 'fa-regular fa-star'"></i>
-                    </div>
-                    <p class="quote" th:text="${r.reviewText}">Review</p>
-                    <div class="who">
-                        <span class="avatar" th:text="${#strings.toUpperCase(#strings.substring(r.customerName,0,1))}">A</span>
-                        <div><strong th:text="${r.customerName}">Name</strong><small th:if="${r.location != null and !#strings.isEmpty(r.location)}" th:text="${r.location}">City</small></div>
-                    </div>
-                </article>
-            </div>
-            <button class="car-btn" id="revNext" aria-label="Next"><i class="fa-solid fa-chevron-right"></i></button>
-        </div>
-        <p class="empty" th:if="${#lists.isEmpty(reviews)}">No reviews yet. Be the first to write one!</p>
+        <div class="reviews-layout">
 
-        <form class="card review-form" th:action="@{/submit-review}" method="post">
-            <h3>Write a review</h3>
-            <div class="row">
-                <label>Your name *<input type="text" name="customerName" required maxlength="80" placeholder="Enter your name"></label>
-                <label>Location (optional)<input type="text" name="location" maxlength="80" placeholder="City"></label>
-            </div>
-            <div class="rate-line">
-                <span>Your rating *</span>
-                <div class="star-input">
-                    <input type="radio" id="s5" name="rating" value="5" required><label for="s5" title="5 stars"><i class="fa-solid fa-star"></i></label>
-                    <input type="radio" id="s4" name="rating" value="4"><label for="s4" title="4 stars"><i class="fa-solid fa-star"></i></label>
-                    <input type="radio" id="s3" name="rating" value="3"><label for="s3" title="3 stars"><i class="fa-solid fa-star"></i></label>
-                    <input type="radio" id="s2" name="rating" value="2"><label for="s2" title="2 stars"><i class="fa-solid fa-star"></i></label>
-                    <input type="radio" id="s1" name="rating" value="1"><label for="s1" title="1 star"><i class="fa-solid fa-star"></i></label>
+            <!-- LEFT: customer reviews -->
+            <div class="reviews-left">
+                <div class="review-list" id="revList" th:if="${!#lists.isEmpty(reviews)}">
+                    <article class="review-card" th:each="r, st : ${reviews}">
+                        <span class="avatar" th:classappend="${st.index % 2 == 1} ? 'orange' : ''"
+                              th:text="${#strings.toUpperCase(#strings.substring(r.customerName,0,1))}">A</span>
+                        <div class="review-body">
+                            <div class="review-top">
+                                <div>
+                                    <strong th:text="${r.customerName}">Name</strong>
+                                    <small th:if="${r.location != null and !#strings.isEmpty(r.location)}" th:text="${r.location}">City</small>
+                                </div>
+                                <div class="stars">
+                                    <i th:each="i : ${#numbers.sequence(1,5)}"
+                                       th:class="${i <= r.rating} ? 'fa-solid fa-star' : 'fa-regular fa-star'"></i>
+                                </div>
+                            </div>
+                            <p class="quote" th:text="${r.reviewText}">Review</p>
+                        </div>
+                    </article>
+                </div>
+
+                <p class="empty" th:if="${#lists.isEmpty(reviews)}">No reviews yet. Be the first to write one!</p>
+
+                <div class="review-nav" id="revNav">
+                    <button type="button" class="nav-circle" id="revPrevBtn" aria-label="Previous"><i class="fa-solid fa-chevron-left"></i></button>
+                    <div class="dots" id="revDots"></div>
+                    <button type="button" class="nav-circle" id="revNextBtn" aria-label="Next"><i class="fa-solid fa-chevron-right"></i></button>
                 </div>
             </div>
-            <label>Your review *<textarea name="reviewText" rows="4" required maxlength="1500" placeholder="Tell us about your experience..."></textarea></label>
-            <button class="btn btn-purple" type="submit">Submit Review</button>
-        </form>
+
+            <!-- RIGHT: write a review -->
+            <form class="review-form" th:action="@{/submit-review}" method="post">
+                <div class="rf-head">
+                    <span class="rf-icon"><i class="fa-solid fa-pen"></i></span>
+                    <div>
+                        <h3>Write a Review</h3>
+                        <p>Share your experience with us. Your feedback helps us serve you better.</p>
+                    </div>
+                </div>
+
+                <label class="rf-label">Customer Name <b>*</b>
+                    <input type="text" name="customerName" required maxlength="80" placeholder="Enter your name">
+                </label>
+
+                <div class="rf-label">Rating <b>*</b>
+                    <div class="star-input">
+                        <input type="radio" id="s5" name="rating" value="5" required><label for="s5" title="5 stars"><i class="fa-solid fa-star"></i></label>
+                        <input type="radio" id="s4" name="rating" value="4"><label for="s4" title="4 stars"><i class="fa-solid fa-star"></i></label>
+                        <input type="radio" id="s3" name="rating" value="3"><label for="s3" title="3 stars"><i class="fa-solid fa-star"></i></label>
+                        <input type="radio" id="s2" name="rating" value="2"><label for="s2" title="2 stars"><i class="fa-solid fa-star"></i></label>
+                        <input type="radio" id="s1" name="rating" value="1"><label for="s1" title="1 star"><i class="fa-solid fa-star"></i></label>
+                    </div>
+                </div>
+
+                <label class="rf-label">Your Review <b>*</b>
+                    <textarea name="reviewText" rows="4" required maxlength="1500" placeholder="Write your review here..."></textarea>
+                </label>
+
+                <button class="rf-submit" type="submit"><i class="fa-solid fa-paper-plane"></i> Submit Review</button>
+            </form>
+        </div>
     </div>
 </section>
 
 <!-- ============ ENQUIRY ============ -->
 <section class="section contact" id="contact">
+
+    <!-- Corner decorations (placeholders: replace the image files) -->
+    <img class="contact-deco deco-left" th:src="@{/images/contact-burst-left.png}" alt="" aria-hidden="true" onerror="this.style.display='none'">
+    <img class="contact-deco deco-right" th:src="@{/images/contact-burst-right.png}" alt="" aria-hidden="true" onerror="this.style.display='none'">
+
     <div class="container contact-grid">
+
+        <!-- LEFT -->
         <div class="contact-info">
             <span class="pill orange" th:if="${s['contact_eyebrow'] != ''}" th:text="${s['contact_eyebrow']}">CONTACT</span>
             <h2><span th:text="${s['contact_title']}">Send us an</span> <em th:text="${s['contact_accent']}">enquiry.</em></h2>
-            <p class="lead" th:text="${s['contact_lead']}">Description</p>
-            <ul class="info-list">
-                <li><span class="ic"><i class="fa-solid fa-phone"></i></span><div><small>Phone</small><strong th:text="${s['phone']}">+00 00000 00000</strong></div></li>
-                <li><span class="ic purple"><i class="fa-regular fa-envelope"></i></span><div><small>Email</small><strong th:text="${s['email']}">hello@yourbusiness.com</strong></div></li>
-                <li><span class="ic"><i class="fa-solid fa-location-dot"></i></span><div><small>Address</small><strong th:text="${s['address']}">Your street address, City</strong></div></li>
-                <li th:if="${s['business_hours'] != ''}"><span class="ic purple"><i class="fa-regular fa-clock"></i></span><div><small>Business hours</small><strong th:text="${s['business_hours']}">Mon - Sat, 9am - 7pm</strong></div></li>
-            </ul>
+            <p class="lead" th:text="${s['contact_lead']}">Tell us what you're looking for and we'll get back to you.</p>
+
+            <div class="contact-extra">
+                <ul class="info-list">
+                    <li><span class="ic"><i class="fa-solid fa-phone"></i></span><div><small>Phone</small><strong th:text="${s['phone']}">+00 00000 00000</strong></div></li>
+                    <li><span class="ic purple"><i class="fa-regular fa-envelope"></i></span><div><small>Email</small><strong th:text="${s['email']}">hello@yourbusiness.com</strong></div></li>
+                    <li><span class="ic"><i class="fa-solid fa-location-dot"></i></span><div><small>Address</small><strong th:text="${s['address']}">Your street address, City</strong></div></li>
+                    <li th:if="${s['business_hours'] != ''}"><span class="ic purple"><i class="fa-regular fa-clock"></i></span><div><small>Business hours</small><strong th:text="${s['business_hours']}">Mon - Sat, 9am - 7pm</strong></div></li>
+                </ul>
+
+                <!-- Illustration (placeholder: replace images/contact.png) -->
+                <div class="contact-art">
+                    <img th:src="@{/images/contact.png}" alt="Contact support illustration" loading="lazy"
+                         onerror="this.onerror=null;this.src='/images/placeholder.svg'">
+                </div>
+            </div>
 
             <div class="socials" th:fragment="socials" th:if="${hasSocials}">
                 <a th:if="${s['social_facebook'] != ''}" th:href="${s['social_facebook']}" target="_blank" rel="noopener noreferrer" aria-label="Facebook"><i class="fa-brands fa-facebook-f"></i></a>
@@ -232,25 +404,38 @@
             </div>
         </div>
 
+        <!-- RIGHT: form card -->
         <form class="card enquiry-form" th:action="@{/submit-enquiry}" method="post" id="enquiryForm">
             <h3 class="label-title">Enquiry Type</h3>
             <input type="hidden" name="enquiryType" id="enquiryType" value="IT Products">
+
             <div class="tabs" id="enqTabs">
                 <button type="button" class="tab active" data-type="IT Products"><i class="fa-solid fa-cube"></i> IT Products</button>
                 <button type="button" class="tab" data-type="Whole Office Setup"><i class="fa-solid fa-desktop"></i> Whole Office Setup</button>
                 <button type="button" class="tab" data-type="Repair and Services"><i class="fa-solid fa-wrench"></i> Repair and Services</button>
             </div>
+
             <div class="tab-head">
                 <span class="ic purple" id="tabIcon"><i class="fa-solid fa-cube"></i></span>
-                <div><h4 id="tabTitle">IT Products Quotation</h4><p id="tabDesc">For laptops, desktops, accessories and other computer products.</p></div>
+                <div>
+                    <h4 id="tabTitle">IT Products Quotation</h4>
+                    <p id="tabDesc">For laptops, desktops, accessories and other computer products.</p>
+                </div>
             </div>
+
             <div class="row">
-                <label>Name <b>*</b><input type="text" name="name" required maxlength="100" placeholder="Enter your name"></label>
-                <label>Phone Number <b>*</b><input type="tel" name="phone" required maxlength="20" pattern="[0-9+()\- ]{7,20}" title="Enter a valid phone number" placeholder="Enter your phone number"></label>
+                <label>Name <b>*</b>
+                    <input type="text" name="name" required maxlength="100" placeholder="Enter your name">
+                </label>
+                <label>Phone Number <b>*</b>
+                    <input type="tel" name="phone" required maxlength="20" pattern="[0-9+()\- ]{7,20}" title="Enter a valid phone number" placeholder="Enter your phone number">
+                </label>
             </div>
+
             <label><span id="prodLabel">Select Product</span> <b>*</b>
                 <select name="productName" id="productSelect" required></select>
             </label>
+
             <div class="row">
                 <label>Quantity <b>*</b>
                     <select name="quantity" required>
@@ -263,10 +448,12 @@
                     <textarea name="specifications" rows="3" maxlength="1500" placeholder="Tell us about the specifications or any special requirements..."></textarea>
                 </label>
             </div>
+
             <label>Message
                 <textarea name="message" rows="3" maxlength="1500" placeholder="Additional details (optional)..."></textarea>
             </label>
-            <button class="btn btn-orange btn-block" type="submit"><i class="fa-solid fa-paper-plane"></i> Submit Enquiry</button>
+
+            <button class="btn btn-orange btn-block" type="submit"><i class="fa-solid fa-arrow-pointer"></i> Submit Enquiry</button>
         </form>
     </div>
 </section>
@@ -306,6 +493,37 @@
     const PRODUCT_NAMES = /*[[${productNames}]]*/ [];
     const SERVICE_NAMES = /*[[${serviceNames}]]*/ [];
 </script>
+
+<!-- Reviews pager (3 per page, arrows + dots) -->
+<script>
+(function () {
+  const cards = Array.from(document.querySelectorAll('#revList .review-card'));
+  const nav = document.getElementById('revNav');
+  if (!cards.length) { if (nav) nav.style.display = 'none'; return; }
+
+  const PER_PAGE = 3;
+  const pages = Math.ceil(cards.length / PER_PAGE);
+  const dots = document.getElementById('revDots');
+  let page = 0;
+
+  function show(p) {
+    page = (p + pages) % pages;
+    cards.forEach((c, i) => c.classList.toggle('is-hidden', Math.floor(i / PER_PAGE) !== page));
+    dots.querySelectorAll('span').forEach((d, i) => d.classList.toggle('active', i === page));
+  }
+
+  if (pages <= 1) { nav.style.display = 'none'; }
+  for (let i = 0; i < pages; i++) {
+    const d = document.createElement('span');
+    d.addEventListener('click', () => show(i));
+    dots.appendChild(d);
+  }
+  document.getElementById('revPrevBtn').addEventListener('click', () => show(page - 1));
+  document.getElementById('revNextBtn').addEventListener('click', () => show(page + 1));
+  show(0);
+})();
+</script>
+
 <script th:src="@{/js/main.js}"></script>
 </body>
 </html>
