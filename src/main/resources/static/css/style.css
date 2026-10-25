@@ -67,7 +67,16 @@ em {
   color: var(--purple)
 }
 
-/* Buttons */
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap
+}
+
+/* ===================== Buttons ===================== */
 .btn {
   display: inline-flex;
   align-items: center;
@@ -124,7 +133,7 @@ em {
   padding: 1rem
 }
 
-/* Header */
+/* ===================== Header ===================== */
 .header {
   position: sticky;
   top: 0;
@@ -180,10 +189,10 @@ em {
   display: none
 }
 
-/* Hero */
+/* ===================== Hero ===================== */
 .hero {
   position: relative;
-  background: linear-gradient(90deg, #fff 30%, rgba(255, 255, 255, .55) 55%, rgba(255, 255, 255, 0) 80%), var(--hero-img, url('/images/hero.png')) center right/cover no-repeat, var(--bg);
+  background: linear-gradient(90deg, rgba(255, 255, 255, .42) 0%, rgba(255, 255, 255, .32) 27%, rgba(255, 255, 255, .16) 52%, rgba(255, 255, 255, .03) 74%, transparent 86%), var(--hero-img, url('/images/hero.png')) center right/cover no-repeat, var(--bg);
   padding: 4rem 0 0
 }
 
@@ -322,7 +331,7 @@ em {
   background: var(--orange)
 }
 
-/* Sections */
+/* ===================== Sections (shared) ===================== */
 .section {
   padding: 6rem 0
 }
@@ -332,7 +341,7 @@ em {
 }
 
 .hero+.section.services-section {
-  padding-top: 3rem
+  padding-top: 5.5rem
 }
 
 .section.alt {
@@ -387,22 +396,26 @@ em {
   margin: 1rem 0
 }
 
-/* Repair & services */
+/* ===================== Repair & services (mockup spacing) ===================== */
 .services-section {
-  padding: 3rem 0 5rem;
-  overflow: hidden
+  --edge: clamp(16px, 7vw, 104px);   /* left and right gap: change this number */
+  --top: 4.5rem;                     /* gap between the header and the photo */
+  padding-bottom: 5rem;              /* gap below the section */
 }
+.hero + .section.services-section { padding-top: var(--top); }
 
 .services-section>.container {
-  width: 100%;
-  max-width: none
+    width: auto;
+  max-width: none;
+  margin-inline: max(var(--edge), calc((100% - 1232px) / 2));
 }
 
+/* photo: contained box, rounded on all corners */
 .services-banner {
-  height: clamp(360px, 38vw, 460px);
+  height: clamp(260px, 37vw, 460px);
   position: relative;
   overflow: hidden;
-  border-radius: 0 26px 26px 0;
+  border-radius: 40px;
   background: var(--purple-soft)
 }
 
@@ -414,30 +427,50 @@ em {
 
 .services-banner-label {
   position: absolute;
-  top: 1.75rem;
-  left: max(2.5%, calc((100% - 1180px)/2));
+  top: 1.7rem;
+  left: 3rem;
   box-shadow: 0 8px 20px rgba(249, 115, 22, .3)
 }
 
+/* card + list area */
 .services-content {
+  --overlap: 127px;
+  /* how far the white card overlaps the photo */
   position: relative;
   z-index: 1;
   display: grid;
-  grid-template-columns: minmax(340px, .62fr) minmax(0, 1fr);
-  gap: 2rem;
+  grid-template-columns: minmax(300px, 438px) minmax(0, 1fr);
+  column-gap: 34px;
+  /* space between card and list */
+  row-gap: 0;
   align-items: start;
-  width: min(1180px, 98%);
-  margin: -128px auto 0
+  width: 100%;
+  margin: calc(var(--overlap) * -1) 0 0;
+  padding-left: 32px
+  /* card sits 32px in from the photo's left edge */
 }
 
+/* white card */
 .services-promo {
   position: relative;
-  margin: 0;
-  padding: 3rem 2.5rem;
-  background: #fff;
-  border-radius: 24px;
-  box-shadow: -12px 8px 0 -1px var(--orange), 0 22px 48px rgba(24, 2, 33, .2);
-  z-index: 1
+  padding: 3.3rem 2.5rem 3.2rem;
+  background: #fffdfa;
+  border-radius: 28px;
+  box-shadow: 0 24px 56px rgba(24, 2, 33, .14)
+}
+
+/* tilted orange card peeking out behind the white card */
+.services-promo::before {
+  content: "";
+  position: absolute;
+  z-index: -1;
+  left: -26px;
+  top: 8px;
+  width: 110px;
+  height: 215px;
+  background: var(--orange);
+  border-radius: 26px;
+  transform: rotate(-4deg)
 }
 
 .services-promo h2 {
@@ -461,30 +494,42 @@ em {
   font-size: .88rem
 }
 
+/* service list: starts 25px under the photo, with a centre divider */
 .services-grid {
+  position: relative;
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
-  column-gap: 2rem;
+  column-gap: 0;
   row-gap: 0;
-  margin-top: 154px
+  margin-top: calc(var(--overlap) + 25px)
+}
+
+.services-grid::before {
+  content: "";
+  position: absolute;
+  left: 50%;
+  top: 0;
+  bottom: 0;
+  width: 2px;
+  background: #e3dee7;
+  transform: translateX(-1px)
 }
 
 .service-card {
   display: flex;
   align-items: center;
-  gap: 1rem;
+  gap: 1.1rem;
   min-width: 0;
   padding: 1.25rem 0;
-  border-bottom: 1px solid #e8e3eb
+  border-bottom: 2px solid #e3dee7
 }
 
 .service-card:nth-child(odd) {
-  border-right: 1px solid #ded9e2;
-  padding-right: 1.5rem
+  margin-right: 2rem
 }
 
 .service-card:nth-child(even) {
-  padding-left: 1.5rem
+  margin-left: 2.7rem
 }
 
 .service-card:nth-last-child(-n+2) {
@@ -493,14 +538,14 @@ em {
 
 .service-icon {
   flex: none;
-  width: 62px;
-  height: 62px;
+  width: 70px;
+  height: 70px;
   border-radius: 50%;
   background: var(--orange-soft);
   color: var(--orange);
   display: grid;
   place-items: center;
-  font-size: 1.5rem
+  font-size: 1.7rem
 }
 
 .service-card:nth-child(even) .service-icon {
@@ -509,7 +554,9 @@ em {
 }
 
 .service-card h3 {
-  font-size: 1.05rem;
+  font-family: 'Playfair Display', serif;
+  /* delete this line to keep Poppins */
+  font-size: 1.25rem;
   font-weight: 500;
   margin-bottom: .25rem
 }
@@ -531,7 +578,7 @@ em {
   color: var(--purple)
 }
 
-/* Product cards */
+/* ===================== Product cards ===================== */
 .products-grid {
   grid-template-columns: repeat(auto-fill, minmax(300px, 1fr))
 }
@@ -596,21 +643,23 @@ em {
   margin: .4rem 0 1.2rem
 }
 
-/* ===== About Us (ab-) ===== */
+/* ===================== About Us (ab-) ===================== */
 .ab-section {
   background: #fffaf3;
   padding: 4rem 0;
-  overflow: hidden;
+  overflow: hidden
 }
 
 .ab-grid {
   display: grid;
   grid-template-columns: 1fr 1.05fr;
   gap: 2rem;
-  align-items: center;
+  align-items: center
 }
 
-.ab-content { min-width: 0 }
+.ab-content {
+  min-width: 0
+}
 
 .ab-pill {
   display: inline-block;
@@ -619,7 +668,7 @@ em {
   font: 700 .66rem 'Poppins', sans-serif;
   letter-spacing: .14em;
   padding: .5rem 1.1rem;
-  border-radius: 999px;
+  border-radius: 999px
 }
 
 .ab-title {
@@ -628,25 +677,34 @@ em {
   font-weight: 600;
   line-height: 1.15;
   color: #14123a;
-  margin: 1.2rem 0 1.4rem;
+  margin: 1.2rem 0 1.4rem
 }
-.ab-title em { font-style: italic; font-weight: 600 }
-.ab-for { color: #7c3aed }
-.ab-accent { color: var(--orange) }
+
+.ab-title em {
+  font-style: italic;
+  font-weight: 600
+}
+
+.ab-for {
+  color: #7c3aed
+}
+
+.ab-accent {
+  color: var(--orange)
+}
 
 .ab-text {
   max-width: 460px;
   font-size: .85rem;
   line-height: 1.75;
   color: #3a2f42;
-  margin-bottom: 1.8rem;
+  margin-bottom: 1.8rem
 }
 
-/* Three cards */
 .ab-cards {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
-  gap: 1rem;
+  gap: 1rem
 }
 
 .ab-card {
@@ -657,9 +715,13 @@ em {
   background: #fff;
   border-radius: 16px;
   box-shadow: 0 8px 24px rgba(24, 2, 33, .06);
-  transition: transform .22s ease, box-shadow .22s ease;
+  transition: transform .22s ease, box-shadow .22s ease
 }
-.ab-card:hover { transform: translateY(-4px); box-shadow: 0 14px 30px rgba(24, 2, 33, .1) }
+
+.ab-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 14px 30px rgba(24, 2, 33, .1)
+}
 
 .ab-icon {
   width: 38px;
@@ -668,21 +730,34 @@ em {
   display: grid;
   place-items: center;
   font-size: .95rem;
-  margin-bottom: .9rem;
+  margin-bottom: .9rem
 }
-.ab-icon.blue   { background: #e8ecff; color: #5b6cf0 }
-.ab-icon.orange { background: #fff0e3; color: var(--orange) }
-.ab-icon.purple { background: #f1e8ff; color: #7c3aed }
+
+.ab-icon.blue {
+  background: #e8ecff;
+  color: #5b6cf0
+}
+
+.ab-icon.orange {
+  background: #fff0e3;
+  color: var(--orange)
+}
+
+.ab-icon.purple {
+  background: #f1e8ff;
+  color: #7c3aed
+}
 
 .ab-card h4 {
   font: 600 .88rem/1.35 'Poppins', sans-serif;
   color: #14123a;
-  margin-bottom: .5rem;
+  margin-bottom: .5rem
 }
+
 .ab-card p {
   font-size: .72rem;
   line-height: 1.55;
-  color: var(--muted);
+  color: var(--muted)
 }
 
 .ab-go {
@@ -694,35 +769,63 @@ em {
   place-items: center;
   font-size: .65rem;
   border: 1px solid;
-  transition: .2s;
+  transition: .2s
 }
-.ab-go.orange { color: var(--orange); border-color: var(--orange) }
-.ab-go.purple { color: #7c3aed; border-color: #7c3aed }
-.ab-go.orange:hover { background: var(--orange); color: #fff }
-.ab-go.purple:hover { background: #7c3aed; color: #fff }
 
-/* Right side: the finished image */
+.ab-go.orange {
+  color: var(--orange);
+  border-color: var(--orange)
+}
+
+.ab-go.purple {
+  color: #7c3aed;
+  border-color: #7c3aed
+}
+
+.ab-go.orange:hover {
+  background: var(--orange);
+  color: #fff
+}
+
+.ab-go.purple:hover {
+  background: #7c3aed;
+  color: #fff
+}
+
 .ab-visual img {
   width: 100%;
   height: auto;
-  display: block;
+  display: block
 }
 
-/* ---- Responsive ---- */
 @media (max-width: 1000px) {
-  .ab-grid { grid-template-columns: 1fr }
-  .ab-visual { max-width: 620px; margin: 0 auto }
+  .ab-grid {
+    grid-template-columns: 1fr
+  }
+
+  .ab-visual {
+    max-width: 620px;
+    margin: 0 auto
+  }
 }
 
 @media (max-width: 640px) {
-  .ab-cards { grid-template-columns: 1fr }
-  .ab-card { min-height: 0 }
-  .ab-go { margin-top: .8rem }
+  .ab-cards {
+    grid-template-columns: 1fr
+  }
+
+  .ab-card {
+    min-height: 0
+  }
+
+  .ab-go {
+    margin-top: .8rem
+  }
 }
 
-/* ===== Reviews ===== */
+/* ===================== Reviews (left and right columns share one height) ===================== */
 .reviews-section {
-  background: linear-gradient(180deg, #f8f4ff 0%, #efe8fb 100%);
+  background: linear-gradient(180deg, #f8f4ff 0%, #efe8fb 100%)
 }
 
 .reviews-head {
@@ -734,7 +837,7 @@ em {
   font-weight: 700;
   line-height: 1.15;
   margin: .9rem 0 .4rem;
-  color: #1d1245;
+  color: #1d1245
 }
 
 .reviews-head h2 em {
@@ -751,26 +854,31 @@ em {
   display: grid;
   grid-template-columns: 1.15fr .85fr;
   gap: 1.5rem;
-  align-items: start;
+  align-items: stretch
 }
 
 .reviews-left {
-  min-width: 0
+  min-width: 0;
+  display: flex;
+  flex-direction: column
 }
 
-/* Review cards */
+/* three equal rows (the pager shows 3 reviews per page) so cards fill the column */
 .review-list {
+  flex: 1;
   display: grid;
-  gap: 1rem
+  gap: 1rem;
+  grid-template-rows: repeat(3, 1fr)
 }
 
 .review-card {
   display: flex;
+  align-items: center;
   gap: 1rem;
   background: #fff;
   border-radius: 14px;
   padding: 1.2rem 1.3rem;
-  box-shadow: 0 6px 20px rgba(80, 50, 150, .07);
+  box-shadow: 0 6px 20px rgba(80, 50, 150, .07)
 }
 
 .review-card.is-hidden {
@@ -788,7 +896,7 @@ em {
   color: #fff;
   font-family: 'Poppins', sans-serif;
   font-weight: 600;
-  font-size: 1.1rem;
+  font-size: 1.1rem
 }
 
 .avatar.orange {
@@ -804,7 +912,7 @@ em {
   display: flex;
   justify-content: space-between;
   align-items: flex-start;
-  gap: 1rem;
+  gap: 1rem
 }
 
 .review-top strong {
@@ -833,13 +941,12 @@ em {
   line-height: 1.6
 }
 
-/* Arrows + dots */
 .review-nav {
   display: flex;
   align-items: center;
   justify-content: space-between;
   margin-top: 1.3rem;
-  padding: 0 .3rem;
+  padding: 0 .3rem
 }
 
 .nav-circle {
@@ -852,7 +959,7 @@ em {
   font-size: .75rem;
   display: grid;
   place-items: center;
-  transition: .2s;
+  transition: .2s
 }
 
 .nav-circle:hover {
@@ -871,7 +978,7 @@ em {
   border-radius: 50%;
   background: #d9cff0;
   cursor: pointer;
-  transition: .2s;
+  transition: .2s
 }
 
 .dots span.active {
@@ -879,7 +986,7 @@ em {
   transform: scale(1.15)
 }
 
-/* Write a review card */
+/* Write a review card: the big text box grows to fill the same height as the left column */
 .review-form {
   position: relative;
   overflow: hidden;
@@ -889,17 +996,17 @@ em {
   box-shadow: 0 15px 35px rgba(80, 50, 150, .08);
   display: grid;
   gap: 1.1rem;
+  grid-template-rows: auto auto auto 1fr auto
 }
 
 .review-form::after {
-  /* purple corner */
   content: "";
   position: absolute;
   top: 0;
   right: 0;
   width: 34px;
   height: 34px;
-  background: linear-gradient(225deg, #6c3be0 50%, transparent 50%);
+  background: linear-gradient(225deg, #6c3be0 50%, transparent 50%)
 }
 
 .rf-head {
@@ -917,7 +1024,7 @@ em {
   color: #6c3be0;
   display: grid;
   place-items: center;
-  font-size: .9rem;
+  font-size: .9rem
 }
 
 .rf-head h3 {
@@ -945,6 +1052,10 @@ em {
   color: #e11d48
 }
 
+.rf-grow {
+  grid-template-rows: auto 1fr
+}
+
 .review-form input[type="text"],
 .review-form textarea {
   width: 100%;
@@ -955,7 +1066,7 @@ em {
   border-radius: 10px;
   background: #fff;
   color: var(--dark);
-  resize: vertical;
+  resize: vertical
 }
 
 .review-form input[type="text"]::placeholder,
@@ -973,7 +1084,10 @@ em {
   min-height: 120px
 }
 
-/* Star rating: outline stars that fill orange */
+.rf-grow textarea {
+  height: 100%
+}
+
 .star-input {
   display: flex;
   flex-direction: row-reverse;
@@ -1016,7 +1130,7 @@ em {
   font-size: .85rem;
   background: linear-gradient(90deg, #5b2fd0, #7c4df0);
   border-right: 8px solid var(--orange);
-  transition: .2s;
+  transition: .2s
 }
 
 .rf-submit:hover {
@@ -1028,9 +1142,21 @@ em {
   .reviews-layout {
     grid-template-columns: 1fr
   }
+
+  .review-list {
+    grid-template-rows: none
+  }
+
+  .review-form {
+    grid-template-rows: none
+  }
+
+  .rf-grow {
+    grid-template-rows: none
+  }
 }
 
-/* Contact (base styles; the final contact design is at the end of this file) */
+/* ===================== Contact (base styles; final design is at the end of this file) ===================== */
 .contact {
   background: linear-gradient(180deg, #fffdf9, var(--bg))
 }
@@ -1136,7 +1262,7 @@ em {
   color: var(--muted)
 }
 
-/* Toast & footer */
+/* ===================== Toast & footer ===================== */
 .toast {
   position: fixed;
   top: 84px;
@@ -1249,7 +1375,30 @@ em {
   color: #d5c9dc
 }
 
-/* Responsive */
+/* ===================== Responsive (general + repair section) ===================== */
+@media(max-width:980px) {
+  .services-content {
+    --overlap: 90px;
+    grid-template-columns: 1fr;
+    padding: 0 1rem;
+    row-gap: 1.5rem
+  }
+
+  .services-promo {
+    padding: 2.4rem 1.8rem
+  }
+
+  .services-grid {
+    margin-top: 0
+  }
+
+  .service-icon {
+    width: 56px;
+    height: 56px;
+    font-size: 1.35rem
+  }
+}
+
 @media(max-width:900px) {
 
   .about,
@@ -1289,7 +1438,7 @@ em {
   }
 
   .hero {
-    background: linear-gradient(180deg, rgba(255, 255, 255, .92), rgba(255, 255, 255, .8)), var(--hero-img, url('/images/hero.png')) center/cover no-repeat, var(--bg);
+    background: linear-gradient(180deg, rgba(255, 255, 255, .38), rgba(255, 255, 255, .2)), var(--hero-img, url('/images/hero.png')) center/cover no-repeat, var(--bg);
     padding-top: 2.5rem
   }
 
@@ -1303,49 +1452,6 @@ em {
 
   .services-section {
     padding: 2.5rem 0 4rem
-  }
-
-  .services-banner {
-    height: 340px;
-    border-radius: 0 22px 22px 0
-  }
-
-  .services-banner-label {
-    left: 4%
-  }
-
-  .services-content {
-    width: 92%;
-    grid-template-columns: minmax(250px, .8fr) minmax(0, 1.2fr);
-    gap: 1.25rem;
-    margin-top: -96px
-  }
-
-  .services-promo {
-    padding: 2rem 1.6rem
-  }
-
-  .services-grid {
-    margin-top: 118px;
-    column-gap: 1rem
-  }
-
-  .service-card {
-    gap: .65rem
-  }
-
-  .service-card:nth-child(odd) {
-    padding-right: .75rem
-  }
-
-  .service-card:nth-child(even) {
-    padding-left: .75rem
-  }
-
-  .service-icon {
-    width: 48px;
-    height: 48px;
-    font-size: 1.2rem
   }
 }
 
@@ -1428,44 +1534,46 @@ em {
   .services-section {
     padding: 2rem 0 3rem
   }
+}
 
-  .services-banner {
-    height: 240px;
-    border-radius: 0 18px 18px 0
-  }
-
-  .services-banner-label {
-    top: 1rem;
-    left: 1rem
-  }
-
+@media(max-width:640px) {
   .services-content {
-    width: 92%;
-    grid-template-columns: 1fr;
-    gap: 1.5rem;
-    margin-top: -3.5rem
+    --overlap: 56px;
+    padding: 0 .5rem
   }
 
   .services-promo {
-    padding: 1.7rem 1.5rem
+    padding: 2rem 1.5rem
   }
 
   .services-promo h2 {
     font-size: 1.8rem
   }
 
-  .services-grid {
-    grid-template-columns: 1fr;
-    margin-top: 0
+  .services-banner {
+    border-radius: 24px
   }
 
-  .service-card,
+  .services-banner-label {
+    top: 1rem;
+    left: 1.2rem
+  }
+
+  .services-grid {
+    grid-template-columns: 1fr
+  }
+
+  .services-grid::before {
+    display: none
+  }
+
   .service-card:nth-child(odd),
   .service-card:nth-child(even) {
-    align-items: center;
-    border-right: 0;
-    border-bottom: 1px solid #e8e3eb;
-    padding: 1rem 0
+    margin: 0
+  }
+
+  .service-card:nth-last-child(-n+2) {
+    border-bottom: 2px solid #e3dee7
   }
 
   .service-card:last-child {
@@ -1473,13 +1581,13 @@ em {
   }
 
   .service-icon {
-    width: 42px;
-    height: 42px;
-    font-size: 1rem
+    width: 46px;
+    height: 46px;
+    font-size: 1.1rem
   }
 
   .service-card h3 {
-    font-size: .95rem
+    font-size: 1.05rem
   }
 
   .service-card p {
@@ -1487,7 +1595,7 @@ em {
   }
 }
 
-/* Social icons + WhatsApp button */
+/* ===================== Social icons + WhatsApp button ===================== */
 .socials {
   display: flex;
   gap: .7rem;
@@ -1536,7 +1644,7 @@ em {
   transform: scale(1.08)
 }
 
-/* Site-wide interactions and scroll reveals */
+/* ===================== Site-wide interactions and scroll reveals ===================== */
 .service-card,
 .pillar,
 .review-card,
@@ -1546,7 +1654,7 @@ em {
 .logo-icon,
 .footer-nav a,
 .footer-contact a {
-  transition: transform .22s ease, box-shadow .22s ease, color .22s ease, background-color .22s ease;
+  transition: transform .22s ease, box-shadow .22s ease, color .22s ease, background-color .22s ease
 }
 
 .service-card:hover,
@@ -1621,7 +1729,7 @@ textarea:focus-visible {
   }
 }
 
-/* ===== Complete computer setup (dark banner) ===== */
+/* ===================== Complete computer setup (dark banner) ===================== */
 .showcase {
   background: var(--dark);
   color: #fff;
@@ -1682,7 +1790,7 @@ textarea:focus-visible {
   color: #eadff0
 }
 
-/* ===== Why choose us ===== */
+/* ===================== Why choose us ===================== */
 .why-title {
   font-size: clamp(2.2rem, 5vw, 3.6rem);
   font-weight: 600;
@@ -1843,9 +1951,9 @@ textarea:focus-visible {
   }
 }
 
-/* ============ CTA BANNER SECTION STYLING ============ */
+/* ===================== CTA banner ===================== */
 .cta-banner-section {
-  padding: 30px 0;
+  padding: 30px 0
 }
 
 .cta-banner-card {
@@ -1856,10 +1964,9 @@ textarea:focus-visible {
   background-position: center;
   background-repeat: no-repeat;
   padding: 60px 50px;
-  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.08);
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.08)
 }
 
-/* Subtle dark gradient overlay to make white text crisp and legible over the image */
 .cta-banner-card::before {
   content: '';
   position: absolute;
@@ -1868,14 +1975,14 @@ textarea:focus-visible {
   width: 100%;
   height: 100%;
   background: linear-gradient(90deg, rgba(30, 25, 45, 0.55) 0%, rgba(30, 25, 45, 0.15) 100%);
-  z-index: 1;
+  z-index: 1
 }
 
 .cta-banner-card .cta-content {
   position: relative;
   z-index: 2;
   max-width: 580px;
-  color: #ffffff;
+  color: #ffffff
 }
 
 .cta-eyebrow {
@@ -1885,7 +1992,7 @@ textarea:focus-visible {
   text-transform: uppercase;
   color: rgba(255, 255, 255, 0.85);
   display: block;
-  margin-bottom: 12px;
+  margin-bottom: 12px
 }
 
 .cta-banner-card h2 {
@@ -1893,102 +2000,99 @@ textarea:focus-visible {
   font-weight: 700;
   line-height: 1.15;
   margin-bottom: 16px;
-  color: #ffffff;
+  color: #ffffff
 }
 
 .cta-banner-card h2 em {
   font-family: Georgia, serif;
   font-style: italic;
   font-weight: 400;
-  color: #e4d5ff;
+  color: #e4d5ff
 }
 
 .cta-banner-card p {
   font-size: 1.05rem;
   color: rgba(255, 255, 255, 0.9);
   margin-bottom: 30px;
-  line-height: 1.5;
+  line-height: 1.5
 }
 
 .cta-action-row {
   display: flex;
   align-items: center;
   gap: 24px;
-  flex-wrap: wrap;
+  flex-wrap: wrap
 }
 
 .cta-tags {
   font-size: 0.9rem;
   color: rgba(255, 255, 255, 0.85);
-  font-weight: 500;
+  font-weight: 500
 }
 
-/* Responsive adjustments for mobile screens */
 @media (max-width: 768px) {
   .cta-banner-card {
-    padding: 40px 24px;
+    padding: 40px 24px
   }
 
   .cta-banner-card h2 {
-    font-size: 2.2rem;
+    font-size: 2.2rem
   }
 
   .cta-action-row {
     flex-direction: column;
     align-items: flex-start;
-    gap: 16px;
+    gap: 16px
   }
 }
 
-/* ===== Computer Sales (Laptops & Desktops) ===== */
+/* ===================== Computer Sales (Laptops & Desktops) ===================== */
 .sales-section {
   background: #fffaf6;
-  overflow: hidden;
+  overflow: hidden
 }
 
 .sales-grid {
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 3rem;
-  align-items: center;
+  align-items: center
 }
 
-/* Left side: the finished image */
 .sales-art img {
   width: 100%;
   max-width: 560px;
   height: auto;
   margin: 0 auto;
-  display: block;
+  display: block
 }
 
-/* Right side: text */
 .sales-text h2 {
   font-size: clamp(1.9rem, 3.6vw, 2.6rem);
   line-height: 1.25;
   font-weight: 600;
   color: var(--purple);
-  margin: 1.1rem 0 1.2rem;
+  margin: 1.1rem 0 1.2rem
 }
 
 .sales-text h2 em {
   color: var(--orange);
   font-style: italic;
-  font-weight: 500;
+  font-weight: 500
 }
 
 .sales-lead {
   color: #3a2f42;
   font-size: .95rem;
   max-width: 440px;
-  margin-bottom: 1.6rem;
+  margin-bottom: 1.6rem
 }
 
 .sales-cards {
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 1rem;
-  margin-bottom: 2rem;
+  margin-bottom: 2rem
 }
 
 .sales-card {
@@ -1998,12 +2102,12 @@ textarea:focus-visible {
   padding: 1rem 1.1rem;
   border-radius: 14px;
   border: 1px solid transparent;
-  transition: transform .22s ease, box-shadow .22s ease;
+  transition: transform .22s ease, box-shadow .22s ease
 }
 
 .sales-card:hover {
   transform: translateY(-4px);
-  box-shadow: var(--shadow);
+  box-shadow: var(--shadow)
 }
 
 .sales-card.purple {
@@ -2023,7 +2127,7 @@ textarea:focus-visible {
   border-radius: 10px;
   display: grid;
   place-items: center;
-  font-size: 1.2rem;
+  font-size: 1.2rem
 }
 
 .sales-card.purple .sales-card-icon {
@@ -2039,13 +2143,13 @@ textarea:focus-visible {
 .sales-card h4 {
   font-size: 1rem;
   font-weight: 600;
-  color: var(--purple);
+  color: var(--purple)
 }
 
 .sales-card p {
   font-size: .75rem;
   color: var(--dark);
-  line-height: 1.4;
+  line-height: 1.4
 }
 
 @media (max-width: 900px) {
@@ -2065,12 +2169,12 @@ textarea:focus-visible {
   }
 }
 
-/* ===== Enquiry / Contact section (final design, keep at the end) ===== */
+/* ===================== Enquiry / Contact (final design, keep at the end) ===================== */
 .contact {
   position: relative;
   overflow: hidden;
   background: #fffbf3;
-  padding: 5rem 0;
+  padding: 5rem 0
 }
 
 .contact .container {
@@ -2078,13 +2182,12 @@ textarea:focus-visible {
   z-index: 1
 }
 
-/* Corner decorations */
 .contact-deco {
   position: absolute;
   z-index: 0;
   height: auto;
   pointer-events: none;
-  width: clamp(36px, 5vw, 72px);
+  width: clamp(36px, 5vw, 72px)
 }
 
 .deco-left {
@@ -2101,30 +2204,29 @@ textarea:focus-visible {
   display: grid;
   grid-template-columns: 1fr 1.1fr;
   gap: 2.5rem;
-  align-items: start;
+  align-items: start
 }
 
-/* ---- Left side ---- */
 .contact-info h2 {
   font-family: 'Playfair Display', serif;
   font-size: clamp(2rem, 4vw, 2.8rem);
   font-weight: 500;
   line-height: 1.15;
   color: #1d1630;
-  margin: 1rem 0 .8rem;
+  margin: 1rem 0 .8rem
 }
 
 .contact-info h2 em {
   color: #8b3df2;
   font-style: italic;
-  font-weight: 500;
+  font-weight: 500
 }
 
 .contact-info .lead {
   color: var(--muted);
   font-size: .92rem;
   max-width: 340px;
-  margin-bottom: 1.6rem;
+  margin-bottom: 1.6rem
 }
 
 .contact-extra {
@@ -2132,14 +2234,14 @@ textarea:focus-visible {
   align-items: flex-end;
   gap: 1rem;
   border-top: 1px solid #e6dccb;
-  padding-top: 1.4rem;
+  padding-top: 1.4rem
 }
 
 .contact-extra .info-list {
   flex: none;
   border-top: 0;
   padding-top: 0;
-  gap: 1.1rem;
+  gap: 1.1rem
 }
 
 .contact-extra .info-list li {
@@ -2159,42 +2261,40 @@ textarea:focus-visible {
 .contact .ic {
   width: 34px;
   height: 34px;
-  font-size: .78rem;
+  font-size: .78rem
 }
 
 .contact-art {
   flex: 1;
   min-width: 0;
-  margin-top: -3.2rem;
-  /* lets the paper plane rise above the line */
+  margin-top: -3.2rem
 }
 
 .contact-art img {
   width: 100%;
   max-width: 340px;
   height: auto;
-  margin-left: auto;
+  margin-left: auto
 }
 
 .contact .socials {
   margin-top: 1.4rem
 }
 
-/* ---- Right side: form card ---- */
 .enquiry-form {
   display: grid;
   gap: 1.1rem;
   background: #fff;
   border-radius: 28px;
   padding: 2rem 2rem 2.2rem;
-  box-shadow: 0 20px 50px rgba(24, 2, 33, .07);
+  box-shadow: 0 20px 50px rgba(24, 2, 33, .07)
 }
 
 .enquiry-form .label-title {
   font-family: 'Manrope', sans-serif;
   font-size: .85rem;
   font-weight: 600;
-  color: #1d1245;
+  color: #1d1245
 }
 
 .enquiry-form .tab {
@@ -2202,13 +2302,13 @@ textarea:focus-visible {
   font-size: .75rem;
   color: #1d1245;
   border-color: #e8e0ef;
-  background: #fff;
+  background: #fff
 }
 
 .enquiry-form .tab.active {
   background: var(--purple);
   border-color: var(--purple);
-  color: #fff;
+  color: #fff
 }
 
 .enquiry-form .tab-head {
@@ -2221,7 +2321,7 @@ textarea:focus-visible {
   border: 0;
   background: #efe7ff;
   color: #6c3be0;
-  font-size: .9rem;
+  font-size: .9rem
 }
 
 .enquiry-form .tab-head h4 {
@@ -2239,7 +2339,7 @@ textarea:focus-visible {
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 1rem;
-  align-items: start;
+  align-items: start
 }
 
 .enquiry-form label {
@@ -2247,7 +2347,7 @@ textarea:focus-visible {
   gap: .45rem;
   font-size: .75rem;
   font-weight: 600;
-  color: #1d1245;
+  color: #1d1245
 }
 
 .enquiry-form label b {
@@ -2266,7 +2366,7 @@ textarea:focus-visible {
   padding: .8rem .9rem;
   border: 1px solid #ebe4f2;
   border-radius: 12px;
-  transition: border-color .2s, box-shadow .2s;
+  transition: border-color .2s, box-shadow .2s
 }
 
 .enquiry-form ::placeholder {
@@ -2287,27 +2387,25 @@ textarea:focus-visible {
 .enquiry-form textarea:focus {
   outline: none;
   border-color: var(--purple);
-  box-shadow: 0 0 0 3px rgba(108, 9, 148, .1);
+  box-shadow: 0 0 0 3px rgba(108, 9, 148, .1)
 }
 
-/* Custom dropdown arrow */
 .enquiry-form select {
   appearance: none;
   -webkit-appearance: none;
   padding-right: 2.2rem;
   background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' fill='none' stroke='%23777' stroke-width='1.6' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
   background-repeat: no-repeat;
-  background-position: right .9rem center;
+  background-position: right .9rem center
 }
 
 .enquiry-form .btn-block {
   margin-top: .4rem;
   padding: .95rem;
   font-size: .85rem;
-  box-shadow: 0 12px 26px rgba(249, 115, 22, .35);
+  box-shadow: 0 12px 26px rgba(249, 115, 22, .35)
 }
 
-/* ---- Responsive ---- */
 @media (max-width: 900px) {
   .contact-grid {
     grid-template-columns: 1fr
@@ -2336,4 +2434,9 @@ textarea:focus-visible {
   .enquiry-form .row {
     grid-template-columns: 1fr
   }
+}
+@media (max-width: 760px) {
+  .services-section { --edge: 16px; --top: 2rem; padding-bottom: 3rem; }
+  .hero + .section.services-section { padding-top: var(--top); }
+  .services-banner { border-radius: 24px; }
 }
