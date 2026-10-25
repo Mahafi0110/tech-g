@@ -282,11 +282,14 @@ em {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   gap: 0;
-  background: #fff;
-  border: 1.5px solid var(--purple);
-  border-radius: 60px;
-  padding: .9rem 1.5rem;
-  box-shadow: var(--shadow);
+  border: 2px solid transparent;
+  border-radius: 999px;
+  padding: .7rem 1.5rem;
+  background:
+    linear-gradient(90deg, #ffffff 0%, #fbf7ff 55%, #f4ebff 100%) padding-box,
+    linear-gradient(90deg, #F97316 0%, #d27ad8 45%, #7c3aed 100%) border-box;
+  background-origin: border-box;
+  box-shadow: 0 14px 34px rgba(108, 9, 148, .12);
   max-width: 900px;
   margin: 1rem auto 0
 }
@@ -299,7 +302,7 @@ em {
 }
 
 .hl+.hl {
-  border-left: 1px solid #eee
+  border-left: 1px solid #efe8f5
 }
 
 .hl h4 {
@@ -346,6 +349,10 @@ em {
 
 .section.alt {
   background: var(--bg)
+}
+
+#products {
+  background: #fff
 }
 
 .section-head {
@@ -398,16 +405,21 @@ em {
 
 /* ===================== Repair & services (mockup spacing) ===================== */
 .services-section {
-  --edge: clamp(16px, 7vw, 104px);   /* left and right gap: change this number */
-  --top: 4.5rem;                     /* gap between the header and the photo */
-  padding-bottom: 5rem;              /* gap below the section */
+  --edge: clamp(16px, 7vw, 104px);
+  /* left and right gap of the photo */
+  --top: 4.5rem;
+  /* gap between the header and the photo */
+  padding-bottom: 5rem
 }
-.hero + .section.services-section { padding-top: var(--top); }
+
+.hero+.section.services-section {
+  padding-top: var(--top)
+}
 
 .services-section>.container {
-    width: auto;
+  width: auto;
   max-width: none;
-  margin-inline: max(var(--edge), calc((100% - 1232px) / 2));
+  margin-inline: max(var(--edge), calc((100% - 1232px) / 2))
 }
 
 /* photo: contained box, rounded on all corners */
@@ -585,7 +597,7 @@ em {
 
 .product-card {
   background: #fffdfb;
-  border: 1px solid #eee3d4;
+  border: 1px solid #f1e6d8;
   border-radius: var(--radius);
   overflow: hidden;
   transition: .25s
@@ -598,7 +610,7 @@ em {
 
 .product-img {
   position: relative;
-  background: var(--orange-soft);
+  background: linear-gradient(180deg, #FFF0DB 0%, #FEF7EE 100%);
   height: 250px;
   display: grid;
   place-items: center;
@@ -627,6 +639,10 @@ em {
   right: 1rem;
   background: #fde8e8;
   color: #b42318
+}
+
+#products .section-head h2 em {
+  color: #7c3aed
 }
 
 .product-body {
@@ -1418,6 +1434,7 @@ em {
   .highlights {
     grid-template-columns: 1fr;
     border-radius: 28px;
+    padding: 1rem 1.2rem;
     transform: none;
     margin-top: 2.5rem
   }
@@ -1842,7 +1859,8 @@ textarea:focus-visible {
   border: 1px solid #efe7f3;
   border-radius: 20px;
   padding: 1.2rem 1.4rem;
-  box-shadow: var(--shadow)
+  box-shadow: var(--shadow);
+  transition: transform .24s ease, box-shadow .24s ease, border-color .24s ease, background-color .24s ease
 }
 
 .why-card::before {
@@ -1855,11 +1873,35 @@ textarea:focus-visible {
   height: 18px;
   border-radius: 50%;
   background: #fff;
-  border: 2px solid var(--orange)
+  border: 2px solid var(--orange);
+  transition: transform .24s ease, box-shadow .24s ease, background-color .24s ease
 }
 
 .why-card:nth-child(even)::before {
   border-color: var(--purple)
+}
+
+.why-card:hover {
+  transform: translateY(-4px);
+  background: #fff;
+  border-color: var(--orange);
+  box-shadow: 0 16px 32px rgba(249, 115, 22, .14)
+}
+
+.why-card:nth-child(even):hover {
+  border-color: var(--purple);
+  box-shadow: 0 16px 32px rgba(108, 9, 148, .14)
+}
+
+.why-card:hover::before {
+  transform: translateY(-50%) scale(1.2);
+  background: var(--orange);
+  box-shadow: 0 0 0 5px var(--orange-soft)
+}
+
+.why-card:nth-child(even):hover::before {
+  background: var(--purple);
+  box-shadow: 0 0 0 5px var(--purple-soft)
 }
 
 .why-icon {
@@ -1871,12 +1913,25 @@ textarea:focus-visible {
   place-items: center;
   font-size: 1.4rem;
   background: var(--orange-soft);
-  color: var(--orange)
+  color: var(--orange);
+  transition: transform .24s ease, background-color .24s ease, color .24s ease
 }
 
 .why-card:nth-child(even) .why-icon {
   background: var(--purple-soft);
   color: var(--purple)
+}
+
+.why-card:hover .why-icon {
+  transform: rotate(-5deg) scale(1.08);
+  background: var(--orange);
+  color: #fff
+}
+
+.why-card:nth-child(even):hover .why-icon {
+  transform: rotate(5deg) scale(1.08);
+  background: var(--purple);
+  color: #fff
 }
 
 .why-card h3 {
@@ -1898,12 +1953,24 @@ textarea:focus-visible {
   display: grid;
   place-items: center;
   background: var(--orange-soft);
-  color: var(--orange)
+  color: var(--orange);
+  transition: transform .24s ease, background-color .24s ease, color .24s ease
 }
 
 .why-card:nth-child(even) .why-arrow {
   background: var(--purple-soft);
   color: var(--purple)
+}
+
+.why-card:hover .why-arrow {
+  transform: translateX(4px);
+  background: var(--orange);
+  color: #fff
+}
+
+.why-card:nth-child(even):hover .why-arrow {
+  background: var(--purple);
+  color: #fff
 }
 
 @media(max-width:900px) {
@@ -2343,11 +2410,17 @@ textarea:focus-visible {
 }
 
 .enquiry-form label {
-  display: grid;
-  gap: .45rem;
+  display: block;
   font-size: .75rem;
   font-weight: 600;
   color: #1d1245
+}
+
+.enquiry-form label>input:not([type="hidden"]),
+.enquiry-form label>select,
+.enquiry-form label>textarea {
+  display: block;
+  margin-top: .45rem
 }
 
 .enquiry-form label b {
@@ -2374,7 +2447,7 @@ textarea:focus-visible {
 }
 
 .enquiry-form textarea {
-  resize: vertical;
+  resize: none;
   min-height: 78px
 }
 
@@ -2397,6 +2470,14 @@ textarea:focus-visible {
   background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' fill='none' stroke='%23777' stroke-width='1.6' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
   background-repeat: no-repeat;
   background-position: right .9rem center
+}
+
+.enquiry-form #productSelect:invalid {
+  color: #aaa2b8
+}
+
+.enquiry-form #productSelect option {
+  color: var(--dark)
 }
 
 .enquiry-form .btn-block {
@@ -2435,8 +2516,19 @@ textarea:focus-visible {
     grid-template-columns: 1fr
   }
 }
+
 @media (max-width: 760px) {
-  .services-section { --edge: 16px; --top: 2rem; padding-bottom: 3rem; }
-  .hero + .section.services-section { padding-top: var(--top); }
-  .services-banner { border-radius: 24px; }
+  .services-section {
+    --edge: 16px;
+    --top: 2rem;
+    padding-bottom: 3rem
+  }
+
+  .hero+.section.services-section {
+    padding-top: var(--top)
+  }
+
+  .services-banner {
+    border-radius: 24px
+  }
 }

@@ -14,7 +14,7 @@
         rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <!-- <link rel="stylesheet" th:href="@{/css/style.css}"> -->
-     <link rel="stylesheet" th:href="@{/css/style.css(v=5)}">
+     <link rel="stylesheet" th:href="@{/css/style.css(v=7)}">
 </head>
 
 <body>
@@ -151,7 +151,7 @@
         </section>
 
         <!-- ============ PRODUCTS ============ -->
-        <section class="section alt" id="products">
+        <section class="section" id="products">
             <div class="container">
                 <div class="section-head">
                     <span class="pill orange" th:if="${s['products_eyebrow'] != ''}"
@@ -489,9 +489,9 @@
         <section class="section contact" id="contact">
 
             <!-- Corner decorations (placeholders: replace the image files) -->
-            <img class="contact-deco deco-left" th:src="@{/images/contact-burst-left.png}" alt="" aria-hidden="true"
+            <img class="contact-deco deco-left" th:src="@{/images/contact-deco.png}" alt="" aria-hidden="true"
                 onerror="this.style.display='none'">
-            <img class="contact-deco deco-right" th:src="@{/images/contact-burst-right.png}" alt="" aria-hidden="true"
+            <img class="contact-deco deco-right" th:src="@{/images/contact-deco.png}" alt="" aria-hidden="true"
                 onerror="this.style.display='none'">
 
             <div class="container contact-grid">
